@@ -229,11 +229,11 @@ class PusherBeamsApi {
     }
   }
 
-  Future<void> onInterestChanges() async {
+  Future<void> onInterestChanges(String arg_callbackId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
         'dev.flutter.pigeon.PusherBeamsApi.onInterestChanges', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
-        await channel.send(null) as Map<Object?, Object?>?;
+        await channel.send(<Object>[arg_callbackId]) as Map<Object?, Object?>?;
     if (replyMap == null) {
       throw PlatformException(
         code: 'channel-error',
@@ -252,11 +252,11 @@ class PusherBeamsApi {
     }
   }
 
-  Future<void> setUserId(String arg_userId, BeamsTokenProvider arg_provider) async {
+  Future<void> setUserId(String arg_userId, BeamsTokenProvider arg_provider, String arg_callbackId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
         'dev.flutter.pigeon.PusherBeamsApi.setUserId', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
-        await channel.send(<Object>[arg_userId, arg_provider]) as Map<Object?, Object?>?;
+        await channel.send(<Object>[arg_userId, arg_provider, arg_callbackId]) as Map<Object?, Object?>?;
     if (replyMap == null) {
       throw PlatformException(
         code: 'channel-error',
@@ -303,6 +303,73 @@ class PusherBeamsApi {
         'dev.flutter.pigeon.PusherBeamsApi.stop', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(null) as Map<Object?, Object?>?;
+    if (replyMap == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message: 'Unable to establish connection on channel.',
+        details: null,
+      );
+    } else if (replyMap['error'] != null) {
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      throw PlatformException(
+        code: (error['code'] as String?)!,
+        message: error['message'] as String?,
+        details: error['details'],
+      );
+    } else {
+      return;
+    }
+  }
+}
+
+class _CallbackHandlerApiCodec extends StandardMessageCodec {
+  const _CallbackHandlerApiCodec();
+}
+abstract class CallbackHandlerApi {
+  static const MessageCodec<Object?> codec = _CallbackHandlerApiCodec();
+
+  void handleCallback(String callbackId, Map<Object?, Object?> message);
+  static void setup(CallbackHandlerApi? api) {
+    {
+      const BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.CallbackHandlerApi.handleCallback', codec);
+      if (api == null) {
+        channel.setMessageHandler(null);
+      } else {
+        channel.setMessageHandler((Object? message) async {
+          assert(message != null, 'Argument for dev.flutter.pigeon.CallbackHandlerApi.handleCallback was null.');
+          final List<Object?> args = (message as List<Object?>?)!;
+          final String? arg_callbackId = args[0] as String?;
+          assert(arg_callbackId != null, 'Argument for dev.flutter.pigeon.CallbackHandlerApi.handleCallback was null, expected non-null String.');
+          final Map<Object?, Object?>? arg_message = args[1] as Map<Object?, Object?>?;
+          assert(arg_message != null, 'Argument for dev.flutter.pigeon.CallbackHandlerApi.handleCallback was null, expected non-null Map<Object?, Object?>.');
+          api.handleCallback(arg_callbackId!, arg_message!);
+          return;
+        });
+      }
+    }
+  }
+}
+
+class _CallbackCreatorApiCodec extends StandardMessageCodec {
+  const _CallbackCreatorApiCodec();
+}
+
+class CallbackCreatorApi {
+  /// Constructor for [CallbackCreatorApi].  The [binaryMessenger] named argument is
+  /// available for dependency injection.  If it is left null, the default
+  /// BinaryMessenger will be used which routes to the host platform.
+  CallbackCreatorApi({BinaryMessenger? binaryMessenger}) : _binaryMessenger = binaryMessenger;
+
+  final BinaryMessenger? _binaryMessenger;
+
+  static const MessageCodec<Object?> codec = _CallbackCreatorApiCodec();
+
+  Future<void> createCallback(String arg_callbackId) async {
+    final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.CallbackCreatorApi.createCallback', codec, binaryMessenger: _binaryMessenger);
+    final Map<Object?, Object?>? replyMap =
+        await channel.send(<Object>[arg_callbackId]) as Map<Object?, Object?>?;
     if (replyMap == null) {
       throw PlatformException(
         code: 'channel-error',

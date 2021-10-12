@@ -28,12 +28,28 @@ NSObject<FlutterMessageCodec> *PusherBeamsApiGetCodec(void);
 - (nullable NSArray<NSString *> *)getDeviceInterestsWithError:(FlutterError *_Nullable *_Nonnull)error;
 - (void)setDeviceInterestsInterests:(NSArray<NSString *> *)interests error:(FlutterError *_Nullable *_Nonnull)error;
 - (void)clearDeviceInterestsWithError:(FlutterError *_Nullable *_Nonnull)error;
-- (void)onInterestChangesWithError:(FlutterError *_Nullable *_Nonnull)error;
-- (void)setUserIdUserId:(NSString *)userId provider:(BeamsTokenProvider *)provider error:(FlutterError *_Nullable *_Nonnull)error;
+- (void)onInterestChangesCallbackId:(NSString *)callbackId error:(FlutterError *_Nullable *_Nonnull)error;
+- (void)setUserIdUserId:(NSString *)userId provider:(BeamsTokenProvider *)provider callbackId:(NSString *)callbackId error:(FlutterError *_Nullable *_Nonnull)error;
 - (void)clearAllStateWithError:(FlutterError *_Nullable *_Nonnull)error;
 - (void)stopWithError:(FlutterError *_Nullable *_Nonnull)error;
 @end
 
 extern void PusherBeamsApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<PusherBeamsApi> *_Nullable api);
+
+/// The codec used by CallbackHandlerApi.
+NSObject<FlutterMessageCodec> *CallbackHandlerApiGetCodec(void);
+
+@interface CallbackHandlerApi : NSObject
+- (instancetype)initWithBinaryMessenger:(id<FlutterBinaryMessenger>)binaryMessenger;
+- (void)handleCallbackCallbackId:(NSString *)callbackId message:(NSDictionary *)message completion:(void(^)(NSError *_Nullable))completion;
+@end
+/// The codec used by CallbackCreatorApi.
+NSObject<FlutterMessageCodec> *CallbackCreatorApiGetCodec(void);
+
+@protocol CallbackCreatorApi
+- (void)createCallbackCallbackId:(NSString *)callbackId error:(FlutterError *_Nullable *_Nonnull)error;
+@end
+
+extern void CallbackCreatorApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<CallbackCreatorApi> *_Nullable api);
 
 NS_ASSUME_NONNULL_END
