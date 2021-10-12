@@ -1,8 +1,5 @@
 import 'package:pigeon/pigeon.dart';
 
-typedef Listener = void Function(Set<String> interests);
-typedef Callback = void Function(bool error);
-
 class BeamsTokenProvider {
   String? authUrl;
   String? sessionToken;
@@ -26,12 +23,22 @@ abstract class PusherBeamsApi {
 
   void clearDeviceInterests();
 
-  void onInterestChanges();
+  void onInterestChanges(String callbackId);
 
-  void setUserId(String userId, BeamsTokenProvider provider);
+  void setUserId(String userId, BeamsTokenProvider provider, String callbackId);
 
   void clearAllState();
 
   void stop();
+}
+
+@FlutterApi()
+abstract class CallbackHandlerApi {
+  void handleCallback(String callbackId, Map message);
+}
+
+@HostApi()
+abstract class CallbackCreatorApi {
+  void createCallback(String callbackId);
 }
 

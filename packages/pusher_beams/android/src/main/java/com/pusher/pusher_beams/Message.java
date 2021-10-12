@@ -93,8 +93,8 @@ public class Message {
     List<String> getDeviceInterests();
     void setDeviceInterests(List<String> interests);
     void clearDeviceInterests();
-    void onInterestChanges();
-    void setUserId(String userId, BeamsTokenProvider provider);
+    void onInterestChanges(String callbackId);
+    void setUserId(String userId, BeamsTokenProvider provider, String callbackId);
     void clearAllState();
     void stop();
 
@@ -260,7 +260,12 @@ public class Message {
           channel.setMessageHandler((message, reply) -> {
             Map<String, Object> wrapped = new HashMap<>();
             try {
-              api.onInterestChanges();
+              ArrayList<Object> args = (ArrayList<Object>)message;
+              String callbackIdArg = (String)args.get(0);
+              if (callbackIdArg == null) {
+                throw new NullPointerException("callbackIdArg unexpectedly null.");
+              }
+              api.onInterestChanges(callbackIdArg);
               wrapped.put("result", null);
             }
             catch (Error | RuntimeException exception) {
@@ -288,7 +293,11 @@ public class Message {
               if (providerArg == null) {
                 throw new NullPointerException("providerArg unexpectedly null.");
               }
-              api.setUserId(userIdArg, providerArg);
+              String callbackIdArg = (String)args.get(2);
+              if (callbackIdArg == null) {
+                throw new NullPointerException("callbackIdArg unexpectedly null.");
+              }
+              api.setUserId(userIdArg, providerArg, callbackIdArg);
               wrapped.put("result", null);
             }
             catch (Error | RuntimeException exception) {
@@ -327,6 +336,74 @@ public class Message {
             Map<String, Object> wrapped = new HashMap<>();
             try {
               api.stop();
+              wrapped.put("result", null);
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+            }
+            reply.reply(wrapped);
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+    }
+  }
+  private static class CallbackHandlerApiCodec extends StandardMessageCodec {
+    public static final CallbackHandlerApiCodec INSTANCE = new CallbackHandlerApiCodec();
+    private CallbackHandlerApiCodec() {}
+  }
+
+  /** Generated class from Pigeon that represents Flutter messages that can be called from Java.*/
+  public static class CallbackHandlerApi {
+    private final BinaryMessenger binaryMessenger;
+    public CallbackHandlerApi(BinaryMessenger argBinaryMessenger){
+      this.binaryMessenger = argBinaryMessenger;
+    }
+    public interface Reply<T> {
+      void reply(T reply);
+    }
+    static MessageCodec<Object> getCodec() {
+      return CallbackHandlerApiCodec.INSTANCE;
+    }
+
+    public void handleCallback(String callbackIdArg, Map<Object, Object> messageArg, Reply<Void> callback) {
+      BasicMessageChannel<Object> channel =
+          new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.CallbackHandlerApi.handleCallback", getCodec());
+      channel.send(new ArrayList<Object>(Arrays.asList(callbackIdArg, messageArg)), channelReply -> {
+        callback.reply(null);
+      });
+    }
+  }
+  private static class CallbackCreatorApiCodec extends StandardMessageCodec {
+    public static final CallbackCreatorApiCodec INSTANCE = new CallbackCreatorApiCodec();
+    private CallbackCreatorApiCodec() {}
+  }
+
+  /** Generated interface from Pigeon that represents a handler of messages from Flutter.*/
+  public interface CallbackCreatorApi {
+    void createCallback(String callbackId);
+
+    /** The codec used by CallbackCreatorApi. */
+    static MessageCodec<Object> getCodec() {
+      return CallbackCreatorApiCodec.INSTANCE;
+    }
+
+    /** Sets up an instance of `CallbackCreatorApi` to handle messages through the `binaryMessenger`. */
+    static void setup(BinaryMessenger binaryMessenger, CallbackCreatorApi api) {
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.CallbackCreatorApi.createCallback", getCodec());
+        if (api != null) {
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              ArrayList<Object> args = (ArrayList<Object>)message;
+              String callbackIdArg = (String)args.get(0);
+              if (callbackIdArg == null) {
+                throw new NullPointerException("callbackIdArg unexpectedly null.");
+              }
+              api.createCallback(callbackIdArg);
               wrapped.put("result", null);
             }
             catch (Error | RuntimeException exception) {
