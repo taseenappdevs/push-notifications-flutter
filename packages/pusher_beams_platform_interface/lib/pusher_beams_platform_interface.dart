@@ -28,12 +28,8 @@ abstract class PusherBeamsPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<void> start() {
+  Future<void> start(String instanceId) {
     throw UnimplementedError('start() has not been implemented.');
-  }
-
-  Future<String> getDeviceId() {
-    throw UnimplementedError('getDeviceId() has not been implemented.');
   }
 
   Future<void> addDeviceInterest(String interest) {

@@ -2,16 +2,13 @@ import 'package:pigeon/pigeon.dart';
 
 class BeamsTokenProvider {
   String? authUrl;
-  String? sessionToken;
   Map<String?, String?>? headers;
   Map<String?, String?>? queryParams;
 }
 
 @HostApi()
 abstract class PusherBeamsApi {
-  void start();
-
-  String getDeviceId();
+  void start(String instanceId);
 
   void addDeviceInterest(String interest);
 
@@ -34,11 +31,5 @@ abstract class PusherBeamsApi {
 
 @FlutterApi()
 abstract class CallbackHandlerApi {
-  void handleCallback(String callbackId, Map message);
+  void handleCallback(String callbackId, String callbackName, List args);
 }
-
-@HostApi()
-abstract class CallbackCreatorApi {
-  void createCallback(String callbackId);
-}
-
