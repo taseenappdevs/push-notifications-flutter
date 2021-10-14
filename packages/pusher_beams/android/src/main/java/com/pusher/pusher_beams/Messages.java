@@ -17,17 +17,13 @@ import java.util.HashMap;
 
 /** Generated class from Pigeon. */
 @SuppressWarnings({"unused", "unchecked", "CodeBlock2Expr", "RedundantSuppression"})
-public class Message {
+public class Messages {
 
   /** Generated class from Pigeon that represents data sent in messages. */
   public static class BeamsTokenProvider {
     private String authUrl;
     public String getAuthUrl() { return authUrl; }
     public void setAuthUrl(String setterArg) { this.authUrl = setterArg; }
-
-    private String sessionToken;
-    public String getSessionToken() { return sessionToken; }
-    public void setSessionToken(String setterArg) { this.sessionToken = setterArg; }
 
     private Map<String, String> headers;
     public Map<String, String> getHeaders() { return headers; }
@@ -40,7 +36,6 @@ public class Message {
     Map<String, Object> toMap() {
       Map<String, Object> toMapResult = new HashMap<>();
       toMapResult.put("authUrl", authUrl);
-      toMapResult.put("sessionToken", sessionToken);
       toMapResult.put("headers", headers);
       toMapResult.put("queryParams", queryParams);
       return toMapResult;
@@ -49,8 +44,6 @@ public class Message {
       BeamsTokenProvider fromMapResult = new BeamsTokenProvider();
       Object authUrl = map.get("authUrl");
       fromMapResult.authUrl = (String)authUrl;
-      Object sessionToken = map.get("sessionToken");
-      fromMapResult.sessionToken = (String)sessionToken;
       Object headers = map.get("headers");
       fromMapResult.headers = (Map<String, String>)headers;
       Object queryParams = map.get("queryParams");
@@ -86,8 +79,7 @@ public class Message {
 
   /** Generated interface from Pigeon that represents a handler of messages from Flutter.*/
   public interface PusherBeamsApi {
-    void start();
-    String getDeviceId();
+    void start(String instanceId);
     void addDeviceInterest(String interest);
     void removeDeviceInterest(String interest);
     List<String> getDeviceInterests();
@@ -112,27 +104,13 @@ public class Message {
           channel.setMessageHandler((message, reply) -> {
             Map<String, Object> wrapped = new HashMap<>();
             try {
-              api.start();
+              ArrayList<Object> args = (ArrayList<Object>)message;
+              String instanceIdArg = (String)args.get(0);
+              if (instanceIdArg == null) {
+                throw new NullPointerException("instanceIdArg unexpectedly null.");
+              }
+              api.start(instanceIdArg);
               wrapped.put("result", null);
-            }
-            catch (Error | RuntimeException exception) {
-              wrapped.put("error", wrapError(exception));
-            }
-            reply.reply(wrapped);
-          });
-        } else {
-          channel.setMessageHandler(null);
-        }
-      }
-      {
-        BasicMessageChannel<Object> channel =
-            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.PusherBeamsApi.getDeviceId", getCodec());
-        if (api != null) {
-          channel.setMessageHandler((message, reply) -> {
-            Map<String, Object> wrapped = new HashMap<>();
-            try {
-              String output = api.getDeviceId();
-              wrapped.put("result", output);
             }
             catch (Error | RuntimeException exception) {
               wrapped.put("error", wrapError(exception));
@@ -367,54 +345,12 @@ public class Message {
       return CallbackHandlerApiCodec.INSTANCE;
     }
 
-    public void handleCallback(String callbackIdArg, Map<Object, Object> messageArg, Reply<Void> callback) {
+    public void handleCallback(String callbackIdArg, String callbackNameArg, List<Object> argsArg, Reply<Void> callback) {
       BasicMessageChannel<Object> channel =
           new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.CallbackHandlerApi.handleCallback", getCodec());
-      channel.send(new ArrayList<Object>(Arrays.asList(callbackIdArg, messageArg)), channelReply -> {
+      channel.send(new ArrayList<Object>(Arrays.asList(callbackIdArg, callbackNameArg, argsArg)), channelReply -> {
         callback.reply(null);
       });
-    }
-  }
-  private static class CallbackCreatorApiCodec extends StandardMessageCodec {
-    public static final CallbackCreatorApiCodec INSTANCE = new CallbackCreatorApiCodec();
-    private CallbackCreatorApiCodec() {}
-  }
-
-  /** Generated interface from Pigeon that represents a handler of messages from Flutter.*/
-  public interface CallbackCreatorApi {
-    void createCallback(String callbackId);
-
-    /** The codec used by CallbackCreatorApi. */
-    static MessageCodec<Object> getCodec() {
-      return CallbackCreatorApiCodec.INSTANCE;
-    }
-
-    /** Sets up an instance of `CallbackCreatorApi` to handle messages through the `binaryMessenger`. */
-    static void setup(BinaryMessenger binaryMessenger, CallbackCreatorApi api) {
-      {
-        BasicMessageChannel<Object> channel =
-            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.CallbackCreatorApi.createCallback", getCodec());
-        if (api != null) {
-          channel.setMessageHandler((message, reply) -> {
-            Map<String, Object> wrapped = new HashMap<>();
-            try {
-              ArrayList<Object> args = (ArrayList<Object>)message;
-              String callbackIdArg = (String)args.get(0);
-              if (callbackIdArg == null) {
-                throw new NullPointerException("callbackIdArg unexpectedly null.");
-              }
-              api.createCallback(callbackIdArg);
-              wrapped.put("result", null);
-            }
-            catch (Error | RuntimeException exception) {
-              wrapped.put("error", wrapError(exception));
-            }
-            reply.reply(wrapped);
-          });
-        } else {
-          channel.setMessageHandler(null);
-        }
-      }
     }
   }
   private static Map<String, Object> wrapError(Throwable exception) {

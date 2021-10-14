@@ -11,9 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
   pusher_beams_platform_interface:
-    path: ../packages/pusher_beams_platform_interface # CHANGE FOR VERSION ONCE PUBLISHED
+    path: ../pusher_beams_platform_interface # CHANGE FOR VERSION ONCE PUBLISHED
   pusher_beams_web:
-    path: ../packages/pusher_beams_web # CHANGE FOR VERSION ONCE PUBLISHED
+    path: ../pusher_beams_web # CHANGE FOR VERSION ONCE PUBLISHED
+  uuid: ^3.0.5
 
 dev_dependencies:
   flutter_test:
