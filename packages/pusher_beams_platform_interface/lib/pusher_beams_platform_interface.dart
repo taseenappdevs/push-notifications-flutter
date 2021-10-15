@@ -56,7 +56,7 @@ abstract class PusherBeamsPlatform extends PlatformInterface {
     throw UnimplementedError('onInterestChanges() has not been implemented.');
   }
 
-  Future<void> setUserId(String userId, BeamsTokenProvider provider, OnUserCallback callback) {
+  Future<void> setUserId(String userId, BeamsAuthProvider provider, OnUserCallback callback) {
     throw UnimplementedError('setUserId() has not been implemented.');
   }
 

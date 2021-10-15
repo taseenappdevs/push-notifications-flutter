@@ -20,7 +20,7 @@ import java.util.HashMap;
 public class Messages {
 
   /** Generated class from Pigeon that represents data sent in messages. */
-  public static class BeamsTokenProvider {
+  public static class BeamsAuthProvider {
     private String authUrl;
     public String getAuthUrl() { return authUrl; }
     public void setAuthUrl(String setterArg) { this.authUrl = setterArg; }
@@ -40,8 +40,8 @@ public class Messages {
       toMapResult.put("queryParams", queryParams);
       return toMapResult;
     }
-    static BeamsTokenProvider fromMap(Map<String, Object> map) {
-      BeamsTokenProvider fromMapResult = new BeamsTokenProvider();
+    static BeamsAuthProvider fromMap(Map<String, Object> map) {
+      BeamsAuthProvider fromMapResult = new BeamsAuthProvider();
       Object authUrl = map.get("authUrl");
       fromMapResult.authUrl = (String)authUrl;
       Object headers = map.get("headers");
@@ -58,7 +58,7 @@ public class Messages {
     protected Object readValueOfType(byte type, ByteBuffer buffer) {
       switch (type) {
         case (byte)128:         
-          return BeamsTokenProvider.fromMap((Map<String, Object>) readValue(buffer));
+          return BeamsAuthProvider.fromMap((Map<String, Object>) readValue(buffer));
         
         default:        
           return super.readValueOfType(type, buffer);
@@ -67,9 +67,9 @@ public class Messages {
     }
     @Override
     protected void writeValue(ByteArrayOutputStream stream, Object value)     {
-      if (value instanceof BeamsTokenProvider) {
+      if (value instanceof BeamsAuthProvider) {
         stream.write(128);
-        writeValue(stream, ((BeamsTokenProvider) value).toMap());
+        writeValue(stream, ((BeamsAuthProvider) value).toMap());
       } else 
 {
         super.writeValue(stream, value);
@@ -86,7 +86,7 @@ public class Messages {
     void setDeviceInterests(List<String> interests);
     void clearDeviceInterests();
     void onInterestChanges(String callbackId);
-    void setUserId(String userId, BeamsTokenProvider provider, String callbackId);
+    void setUserId(String userId, BeamsAuthProvider provider, String callbackId);
     void clearAllState();
     void stop();
 
@@ -267,7 +267,7 @@ public class Messages {
               if (userIdArg == null) {
                 throw new NullPointerException("userIdArg unexpectedly null.");
               }
-              BeamsTokenProvider providerArg = (BeamsTokenProvider)args.get(1);
+              BeamsAuthProvider providerArg = (BeamsAuthProvider)args.get(1);
               if (providerArg == null) {
                 throw new NullPointerException("providerArg unexpectedly null.");
               }

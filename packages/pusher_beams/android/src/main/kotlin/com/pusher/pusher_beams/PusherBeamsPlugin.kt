@@ -72,7 +72,7 @@ class PusherBeamsPlugin: FlutterPlugin, Messages.PusherBeamsApi {
 
   override fun setUserId(
     userId: kotlin.String,
-    provider: Messages.BeamsTokenProvider,
+    provider: Messages.BeamsAuthProvider,
     callbackId: kotlin.String
   ) {
     val tokenProvider = BeamsTokenProvider(

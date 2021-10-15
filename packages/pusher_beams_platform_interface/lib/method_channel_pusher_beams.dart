@@ -8,7 +8,7 @@ import 'dart:typed_data' show Uint8List, Int32List, Int64List, Float64List;
 import 'package:flutter/foundation.dart' show WriteBuffer, ReadBuffer;
 import 'package:flutter/services.dart';
 
-class BeamsTokenProvider {
+class BeamsAuthProvider {
   String? authUrl;
   Map<String?, String?>? headers;
   Map<String?, String?>? queryParams;
@@ -21,9 +21,9 @@ class BeamsTokenProvider {
     return pigeonMap;
   }
 
-  static BeamsTokenProvider decode(Object message) {
+  static BeamsAuthProvider decode(Object message) {
     final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
-    return BeamsTokenProvider()
+    return BeamsAuthProvider()
       ..authUrl = pigeonMap['authUrl'] as String?
       ..headers = (pigeonMap['headers'] as Map<Object?, Object?>?)?.cast<String?, String?>()
       ..queryParams = (pigeonMap['queryParams'] as Map<Object?, Object?>?)?.cast<String?, String?>();
@@ -34,7 +34,7 @@ class _PusherBeamsApiCodec extends StandardMessageCodec {
   const _PusherBeamsApiCodec();
   @override
   void writeValue(WriteBuffer buffer, Object? value) {
-    if (value is BeamsTokenProvider) {
+    if (value is BeamsAuthProvider) {
       buffer.putUint8(128);
       writeValue(buffer, value.encode());
     } else 
@@ -46,7 +46,7 @@ class _PusherBeamsApiCodec extends StandardMessageCodec {
   Object? readValueOfType(int type, ReadBuffer buffer) {
     switch (type) {
       case 128:       
-        return BeamsTokenProvider.decode(readValue(buffer)!);
+        return BeamsAuthProvider.decode(readValue(buffer)!);
       
       default:      
         return super.readValueOfType(type, buffer);
@@ -226,7 +226,7 @@ class PusherBeamsApi {
     }
   }
 
-  Future<void> setUserId(String arg_userId, BeamsTokenProvider arg_provider, String arg_callbackId) async {
+  Future<void> setUserId(String arg_userId, BeamsAuthProvider arg_provider, String arg_callbackId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
         'dev.flutter.pigeon.PusherBeamsApi.setUserId', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =

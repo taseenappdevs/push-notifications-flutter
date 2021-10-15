@@ -1,6 +1,6 @@
 import 'package:pigeon/pigeon.dart';
 
-class BeamsTokenProvider {
+class BeamsAuthProvider {
   String? authUrl;
   Map<String?, String?>? headers;
   Map<String?, String?>? queryParams;
@@ -22,7 +22,7 @@ abstract class PusherBeamsApi {
 
   void onInterestChanges(String callbackId);
 
-  void setUserId(String userId, BeamsTokenProvider provider, String callbackId);
+  void setUserId(String userId, BeamsAuthProvider provider, String callbackId);
 
   void clearAllState();
 
