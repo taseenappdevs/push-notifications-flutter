@@ -22,21 +22,17 @@ static NSDictionary<NSString *, id> *wrapResult(id result, FlutterError *error) 
       };
 }
 
-@interface BeamsTokenProvider ()
-+ (BeamsTokenProvider *)fromMap:(NSDictionary *)dict;
+@interface BeamsAuthProvider ()
++ (BeamsAuthProvider *)fromMap:(NSDictionary *)dict;
 - (NSDictionary *)toMap;
 @end
 
-@implementation BeamsTokenProvider
-+ (BeamsTokenProvider *)fromMap:(NSDictionary *)dict {
-  BeamsTokenProvider *result = [[BeamsTokenProvider alloc] init];
+@implementation BeamsAuthProvider
++ (BeamsAuthProvider *)fromMap:(NSDictionary *)dict {
+  BeamsAuthProvider *result = [[BeamsAuthProvider alloc] init];
   result.authUrl = dict[@"authUrl"];
   if ((NSNull *)result.authUrl == [NSNull null]) {
     result.authUrl = nil;
-  }
-  result.sessionToken = dict[@"sessionToken"];
-  if ((NSNull *)result.sessionToken == [NSNull null]) {
-    result.sessionToken = nil;
   }
   result.headers = dict[@"headers"];
   if ((NSNull *)result.headers == [NSNull null]) {
@@ -49,7 +45,7 @@ static NSDictionary<NSString *, id> *wrapResult(id result, FlutterError *error) 
   return result;
 }
 - (NSDictionary *)toMap {
-  return [NSDictionary dictionaryWithObjectsAndKeys:(self.authUrl ? self.authUrl : [NSNull null]), @"authUrl", (self.sessionToken ? self.sessionToken : [NSNull null]), @"sessionToken", (self.headers ? self.headers : [NSNull null]), @"headers", (self.queryParams ? self.queryParams : [NSNull null]), @"queryParams", nil];
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.authUrl ? self.authUrl : [NSNull null]), @"authUrl", (self.headers ? self.headers : [NSNull null]), @"headers", (self.queryParams ? self.queryParams : [NSNull null]), @"queryParams", nil];
 }
 @end
 
@@ -60,7 +56,7 @@ static NSDictionary<NSString *, id> *wrapResult(id result, FlutterError *error) 
 {
   switch (type) {
     case 128:     
-      return [BeamsTokenProvider fromMap:[self readValue]];
+      return [BeamsAuthProvider fromMap:[self readValue]];
     
     default:    
       return [super readValueOfType:type];
@@ -74,7 +70,7 @@ static NSDictionary<NSString *, id> *wrapResult(id result, FlutterError *error) 
 @implementation PusherBeamsApiCodecWriter
 - (void)writeValue:(id)value 
 {
-  if ([value isKindOfClass:[BeamsTokenProvider class]]) {
+  if ([value isKindOfClass:[BeamsAuthProvider class]]) {
     [self writeByte:128];
     [self writeValue:[value toMap]];
   } else 
@@ -114,29 +110,13 @@ void PusherBeamsApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<Pu
         binaryMessenger:binaryMessenger
         codec:PusherBeamsApiGetCodec()];
     if (api) {
-      NSCAssert([api respondsToSelector:@selector(startWithError:)], @"PusherBeamsApi api (%@) doesn't respond to @selector(startWithError:)", api);
+      NSCAssert([api respondsToSelector:@selector(startInstanceId:error:)], @"PusherBeamsApi api (%@) doesn't respond to @selector(startInstanceId:error:)", api);
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        NSArray *args = message;
+        NSString *arg_instanceId = args[0];
         FlutterError *error;
-        [api startWithError:&error];
+        [api startInstanceId:arg_instanceId error:&error];
         callback(wrapResult(nil, error));
-      }];
-    }
-    else {
-      [channel setMessageHandler:nil];
-    }
-  }
-  {
-    FlutterBasicMessageChannel *channel =
-      [FlutterBasicMessageChannel
-        messageChannelWithName:@"dev.flutter.pigeon.PusherBeamsApi.getDeviceId"
-        binaryMessenger:binaryMessenger
-        codec:PusherBeamsApiGetCodec()];
-    if (api) {
-      NSCAssert([api respondsToSelector:@selector(getDeviceIdWithError:)], @"PusherBeamsApi api (%@) doesn't respond to @selector(getDeviceIdWithError:)", api);
-      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
-        FlutterError *error;
-        NSString *output = [api getDeviceIdWithError:&error];
-        callback(wrapResult(output, error));
       }];
     }
     else {
@@ -270,7 +250,7 @@ void PusherBeamsApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<Pu
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         NSArray *args = message;
         NSString *arg_userId = args[0];
-        BeamsTokenProvider *arg_provider = args[1];
+        BeamsAuthProvider *arg_provider = args[1];
         NSString *arg_callbackId = args[2];
         FlutterError *error;
         [api setUserIdUserId:arg_userId provider:arg_provider callbackId:arg_callbackId error:&error];
@@ -363,68 +343,14 @@ NSObject<FlutterMessageCodec> *CallbackHandlerApiGetCodec() {
   return self;
 }
 
-- (void)handleCallbackCallbackId:(NSString *)arg_callbackId message:(NSDictionary *)arg_message completion:(void(^)(NSError *_Nullable))completion {
+- (void)handleCallbackCallbackId:(NSString *)arg_callbackId callbackName:(NSString *)arg_callbackName args:(NSArray *)arg_args completion:(void(^)(NSError *_Nullable))completion {
   FlutterBasicMessageChannel *channel =
     [FlutterBasicMessageChannel
       messageChannelWithName:@"dev.flutter.pigeon.CallbackHandlerApi.handleCallback"
       binaryMessenger:self.binaryMessenger
       codec:CallbackHandlerApiGetCodec()];
-  [channel sendMessage:@[arg_callbackId, arg_message] reply:^(id reply) {
+  [channel sendMessage:@[arg_callbackId, arg_callbackName, arg_args] reply:^(id reply) {
     completion(nil);
   }];
 }
 @end
-@interface CallbackCreatorApiCodecReader : FlutterStandardReader
-@end
-@implementation CallbackCreatorApiCodecReader
-@end
-
-@interface CallbackCreatorApiCodecWriter : FlutterStandardWriter
-@end
-@implementation CallbackCreatorApiCodecWriter
-@end
-
-@interface CallbackCreatorApiCodecReaderWriter : FlutterStandardReaderWriter
-@end
-@implementation CallbackCreatorApiCodecReaderWriter
-- (FlutterStandardWriter *)writerWithData:(NSMutableData *)data {
-  return [[CallbackCreatorApiCodecWriter alloc] initWithData:data];
-}
-- (FlutterStandardReader *)readerWithData:(NSData *)data {
-  return [[CallbackCreatorApiCodecReader alloc] initWithData:data];
-}
-@end
-
-NSObject<FlutterMessageCodec> *CallbackCreatorApiGetCodec() {
-  static dispatch_once_t s_pred = 0;
-  static FlutterStandardMessageCodec *s_sharedObject = nil;
-  dispatch_once(&s_pred, ^{
-    CallbackCreatorApiCodecReaderWriter *readerWriter = [[CallbackCreatorApiCodecReaderWriter alloc] init];
-    s_sharedObject = [FlutterStandardMessageCodec codecWithReaderWriter:readerWriter];
-  });
-  return s_sharedObject;
-}
-
-
-void CallbackCreatorApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<CallbackCreatorApi> *api) {
-  {
-    FlutterBasicMessageChannel *channel =
-      [FlutterBasicMessageChannel
-        messageChannelWithName:@"dev.flutter.pigeon.CallbackCreatorApi.createCallback"
-        binaryMessenger:binaryMessenger
-        codec:CallbackCreatorApiGetCodec()];
-    if (api) {
-      NSCAssert([api respondsToSelector:@selector(createCallbackCallbackId:error:)], @"CallbackCreatorApi api (%@) doesn't respond to @selector(createCallbackCallbackId:error:)", api);
-      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
-        NSArray *args = message;
-        NSString *arg_callbackId = args[0];
-        FlutterError *error;
-        [api createCallbackCallbackId:arg_callbackId error:&error];
-        callback(wrapResult(nil, error));
-      }];
-    }
-    else {
-      [channel setMessageHandler:nil];
-    }
-  }
-}
