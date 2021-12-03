@@ -4,6 +4,7 @@ class BeamsAuthProvider {
   String? authUrl;
   Map<String?, String?>? headers;
   Map<String?, String?>? queryParams;
+  String? credentials; // web-only
 }
 
 @HostApi()
