@@ -198,6 +198,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  pusher_beams_android:
+    dependency: "direct main"
+    description:
+      path: "../pusher_beams_android"
+      relative: true
+    source: path
+    version: "0.0.1"
+  pusher_beams_ios:
+    dependency: "direct main"
+    description:
+      path: "../pusher_beams_ios"
+      relative: true
+    source: path
+    version: "0.0.1"
   pusher_beams_platform_interface:
     dependency: "direct main"
     description:

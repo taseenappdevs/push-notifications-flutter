@@ -14,6 +14,10 @@ dependencies:
     path: ../pusher_beams_platform_interface # CHANGE FOR VERSION ONCE PUBLISHED
   pusher_beams_web:
     path: ../pusher_beams_web # CHANGE FOR VERSION ONCE PUBLISHED
+  pusher_beams_android:
+    path: ../pusher_beams_android # CHANGE FOR VERSION ONCE PUBLISHED
+  pusher_beams_ios:
+    path: ../pusher_beams_ios # CHANGE FOR VERSION ONCE PUBLISHED
   uuid: ^3.0.5
 
 dev_dependencies:
@@ -34,10 +38,9 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.pusher.pusher_beams
-        pluginClass: PusherBeamsPlugin
+        default_package: pusher_beams_android
       ios:
-        pluginClass: PusherBeamsPlugin
+        default_package: pusher_beams_ios
       web:
         default_package: pusher_beams_web
 

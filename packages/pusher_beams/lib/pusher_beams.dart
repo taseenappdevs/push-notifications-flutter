@@ -1,6 +1,7 @@
 library pusher_beams;
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:pusher_beams_platform_interface/method_channel_pusher_beams.dart';
 import 'package:pusher_beams_platform_interface/pusher_beams_platform_interface.dart';
 import 'package:uuid/uuid.dart';
@@ -11,10 +12,12 @@ class PusherBeams extends PusherBeamsPlatform with CallbackHandlerApi {
 
   static final Map<String, Function> _callbacks = {};
 
-  static final _pusherBeamsApi = PusherBeamsApi();
+  static final dynamic _pusherBeamsApi = PusherBeamsPlatform.instance;
 
   PusherBeams._privateConstructor() {
-    CallbackHandlerApi.setup(this);
+    if (!kIsWeb) {
+      CallbackHandlerApi.setup(this);
+    }
   }
 
   static final PusherBeams _instance = PusherBeams._privateConstructor();
@@ -29,7 +32,10 @@ class PusherBeams extends PusherBeamsPlatform with CallbackHandlerApi {
   @override
   Future<void> clearAllState() async {
     await _pusherBeamsApi.clearAllState();
-    _callbacks.clear();
+
+    if (!kIsWeb) {
+      _callbacks.clear();
+    }
   }
 
   @override
@@ -46,7 +52,9 @@ class PusherBeams extends PusherBeamsPlatform with CallbackHandlerApi {
   Future<void> onInterestChanges(OnInterestsChange callback) async {
     final callbackId = _uuid.v4();
 
-    _callbacks[callbackId] = callback;
+    if (!kIsWeb) {
+      _callbacks[callbackId] = callback;
+    }
 
     await _pusherBeamsApi.onInterestChanges(callbackId);
   }
@@ -64,9 +72,12 @@ class PusherBeams extends PusherBeamsPlatform with CallbackHandlerApi {
   @override
   Future<void> setUserId(String userId, BeamsAuthProvider provider, OnUserCallback callback) async {
     final callbackId = _uuid.v4();
-    _callbacks[callbackId] = callback;
 
-    await _pusherBeamsApi.setUserId(userId, provider, callbackId);
+    if (!kIsWeb) {
+      _callbacks[callbackId] = callback;
+    }
+
+    await _pusherBeamsApi.setUserId(userId, provider, kIsWeb ? callback : callbackId);
   }
 
   @override
@@ -77,7 +88,10 @@ class PusherBeams extends PusherBeamsPlatform with CallbackHandlerApi {
   @override
   Future<void> stop() async {
     await _pusherBeamsApi.stop();
-    _callbacks.clear();
+
+    if (!kIsWeb) {
+      _callbacks.clear();
+    }
   }
 
   @override
