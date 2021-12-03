@@ -33,11 +33,16 @@ public class Messages {
     public Map<String, String> getQueryParams() { return queryParams; }
     public void setQueryParams(Map<String, String> setterArg) { this.queryParams = setterArg; }
 
+    private String credentials;
+    public String getCredentials() { return credentials; }
+    public void setCredentials(String setterArg) { this.credentials = setterArg; }
+
     Map<String, Object> toMap() {
       Map<String, Object> toMapResult = new HashMap<>();
       toMapResult.put("authUrl", authUrl);
       toMapResult.put("headers", headers);
       toMapResult.put("queryParams", queryParams);
+      toMapResult.put("credentials", credentials);
       return toMapResult;
     }
     static BeamsAuthProvider fromMap(Map<String, Object> map) {
@@ -48,6 +53,8 @@ public class Messages {
       fromMapResult.headers = (Map<String, String>)headers;
       Object queryParams = map.get("queryParams");
       fromMapResult.queryParams = (Map<String, String>)queryParams;
+      Object credentials = map.get("credentials");
+      fromMapResult.credentials = (String)credentials;
       return fromMapResult;
     }
   }
