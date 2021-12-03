@@ -7,17 +7,20 @@ import 'dart:typed_data' show Uint8List, Int32List, Int64List, Float64List;
 
 import 'package:flutter/foundation.dart' show WriteBuffer, ReadBuffer;
 import 'package:flutter/services.dart';
+import 'package:pusher_beams_platform_interface/pusher_beams_platform_interface.dart';
 
 class BeamsAuthProvider {
   String? authUrl;
   Map<String?, String?>? headers;
   Map<String?, String?>? queryParams;
+  String? credentials;
 
   Object encode() {
     final Map<Object?, Object?> pigeonMap = <Object?, Object?>{};
     pigeonMap['authUrl'] = authUrl;
     pigeonMap['headers'] = headers;
     pigeonMap['queryParams'] = queryParams;
+    pigeonMap['credentials'] = credentials;
     return pigeonMap;
   }
 
@@ -26,7 +29,8 @@ class BeamsAuthProvider {
     return BeamsAuthProvider()
       ..authUrl = pigeonMap['authUrl'] as String?
       ..headers = (pigeonMap['headers'] as Map<Object?, Object?>?)?.cast<String?, String?>()
-      ..queryParams = (pigeonMap['queryParams'] as Map<Object?, Object?>?)?.cast<String?, String?>();
+      ..queryParams = (pigeonMap['queryParams'] as Map<Object?, Object?>?)?.cast<String?, String?>()
+      ..credentials = pigeonMap['credentials'] as String?;
   }
 }
 
@@ -55,7 +59,7 @@ class _PusherBeamsApiCodec extends StandardMessageCodec {
   }
 }
 
-class PusherBeamsApi {
+class PusherBeamsApi extends PusherBeamsPlatform {
   /// Constructor for [PusherBeamsApi].  The [binaryMessenger] named argument is
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
@@ -203,7 +207,7 @@ class PusherBeamsApi {
     }
   }
 
-  Future<void> onInterestChanges(String arg_callbackId) async {
+  Future<void> onInterestChanges(dynamic arg_callbackId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
         'dev.flutter.pigeon.PusherBeamsApi.onInterestChanges', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
@@ -226,7 +230,7 @@ class PusherBeamsApi {
     }
   }
 
-  Future<void> setUserId(String arg_userId, BeamsAuthProvider arg_provider, String arg_callbackId) async {
+  Future<void> setUserId(String arg_userId, BeamsAuthProvider arg_provider, dynamic arg_callbackId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
         'dev.flutter.pigeon.PusherBeamsApi.setUserId', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =

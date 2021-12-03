@@ -4,16 +4,15 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:pusher_beams_platform_interface/method_channel_pusher_beams.dart';
 
 typedef OnUserCallback = Function(String? error);
-typedef OnInterestsChange = Function(List<String>? interests);
-
-class DefaultPlatform extends PusherBeamsPlatform {}
+typedef OnInterestsChange = Function(List<String?> interests);
 
 abstract class PusherBeamsPlatform extends PlatformInterface {
   PusherBeamsPlatform() : super(token: _token);
 
   static final Object _token = Object();
 
-  static PusherBeamsPlatform _instance = DefaultPlatform();
+  // NOTE: Remember to change .onInterestChanges and .setUserId last argument to dynamic on MethodChannel
+  static PusherBeamsPlatform _instance = PusherBeamsApi();
 
   /// The default instance of [PusherBeamsPlatform] to use.
   ///
