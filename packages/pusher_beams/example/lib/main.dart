@@ -1,13 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 
 import 'package:pusher_beams/pusher_beams.dart';
 
 void main() async {
   runApp(const MyApp());
 
-  await PusherBeams.instance.start('fe8d1a3b-49f8-4375-a278-a49e6bb7f020');
+  await PusherBeams.instance.start('YOUR INSTANCE ID'); // Supply your own instanceId
 }
 
 class MyApp extends StatefulWidget {
@@ -23,13 +22,37 @@ class _MyAppState extends State<MyApp> {
   initState() {
     super.initState();
 
-    testInterestsChanges();
+    initPusherBeams();
+  }
+  
+  getSecure() async {
+    final BeamsAuthProvider provider = BeamsAuthProvider()
+      ..authUrl = 'https://some-auth-url.com/secure'
+      ..headers = {
+        'Content-Type': 'application/json'
+      }
+      ..queryParams = {
+        'page': '1'
+      }
+      ..credentials = 'omit';
+
+    await PusherBeams.instance.setUserId('THIS IS AN USER ID', provider, (error) => {
+      if (error != null) {
+        print(error)
+      }
+
+      // Success! Do something...
+    });
   }
 
-  testInterestsChanges() async {
+  initPusherBeams() async {
+    // Let's see our current interests
+    print(await PusherBeams.instance.getDeviceInterests());
+
+    // This is not intented to use in web
     if (!kIsWeb) {
       await PusherBeams.instance.onInterestChanges((interests) => {
-        print('Interests change: $interests')
+        print('Interests: $interests')
       });
     }
   }
@@ -41,14 +64,49 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: OutlinedButton(
-            onPressed: () async {
-              await PusherBeams.instance.clearDeviceInterests();
-              await PusherBeams.instance.addDeviceInterest('debug0-hello');
-            },
-            child: const Text('START'),
-          ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            OutlinedButton(
+              onPressed: () async {
+                await PusherBeams.instance.addDeviceInterest('bananas');
+              },
+              child: const Text(
+                'I like bananas'
+              )
+            ),
+            OutlinedButton(
+                onPressed: () async {
+                  await PusherBeams.instance.addDeviceInterest('apples');
+                },
+                child: const Text(
+                    'I like apples'
+                )
+            ),
+            OutlinedButton(
+                onPressed: () async {
+                  await PusherBeams.instance.addDeviceInterest('garlic');
+                },
+                child: const Text(
+                    'I like garlic'
+                )
+            ),
+            OutlinedButton(
+                onPressed: getSecure,
+                child: const Text(
+                    'Get Secure'
+                )
+            ),
+            OutlinedButton(
+                onPressed: () async {
+                  await PusherBeams.instance.clearDeviceInterests();
+                },
+                child: const Text(
+                    'Clear my interests'
+                )
+            )
+          ],
         ),
       ),
     );
