@@ -1,5 +1,6 @@
 library pusher_beams_platform_interface;
 
+import 'package:flutter/foundation.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:pusher_beams_platform_interface/method_channel_pusher_beams.dart';
 
@@ -13,6 +14,14 @@ abstract class PusherBeamsPlatform extends PlatformInterface {
 
   // NOTE: Remember to change .onInterestChanges and .setUserId last argument to dynamic on MethodChannel
   static PusherBeamsPlatform _instance = PusherBeamsApi();
+
+  /// Only mock implementations should set this to true.
+  ///
+  /// Mockito mocks are implementing this class with `implements` which is forbidden for anything
+  /// other than mocks (see class docs). This property provides a backdoor for mockito mocks to
+  /// skip the verification that the class isn't implemented with `implements`.
+  @visibleForTesting
+  bool get isMock => false;
 
   /// The default instance of [PusherBeamsPlatform] to use.
   ///
