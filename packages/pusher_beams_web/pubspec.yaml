@@ -1,7 +1,8 @@
 name: pusher_beams_web
 description: A new flutter plugin project.
 version: 0.0.1
-homepage:
+repository: https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams_web
+issue_tracker: https://github.com/pusher/flutter_pusher_beams/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+web%22
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
