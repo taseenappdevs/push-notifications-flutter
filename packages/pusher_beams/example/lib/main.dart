@@ -6,7 +6,7 @@ import 'package:pusher_beams/pusher_beams.dart';
 void main() async {
   runApp(const MyApp());
 
-  await PusherBeams.instance.start('YOUR INSTANCE ID'); // Supply your own instanceId
+  await PusherBeams.instance.start('your-instance-id'); // Supply your own instanceId
 }
 
 class MyApp extends StatefulWidget {
