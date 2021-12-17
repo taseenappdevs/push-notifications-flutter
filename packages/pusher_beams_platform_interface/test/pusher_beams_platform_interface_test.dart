@@ -1,27 +1,49 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:pusher_beams_platform_interface/method_channel_pusher_beams.dart';
 import 'package:pusher_beams_platform_interface/pusher_beams_platform_interface.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  group(PusherBeamsPlatform, () {
-    test('disallows implementing interface', () {
-      expect(
-            () {
-              PusherBeamsPlatform.instance = IllegalImplementation();
-        },
-        throwsNoSuchMethodError,
-      );
+  final PusherBeamsPlatform initialInstance = PusherBeamsPlatform.instance;
+
+  group('$PusherBeamsPlatform', () {
+    test('$PusherBeamsApi is the default instance', () {
+      expect(initialInstance, isInstanceOf<PusherBeamsApi>());
     });
+
+    test('Cannot be implemented with `implements`', () {
+      expect(() {
+        PusherBeamsPlatform.instance = ImplementsPusherBeamsPlatform();
+      }, throwsA(isInstanceOf<AssertionError>()));
+    });
+
+    test('Can be mocked with `implements`', () {
+      final PusherBeamsPlatformMock mock = PusherBeamsPlatformMock();
+      PusherBeamsPlatform.instance = mock;
+    });
+
+    test('Can be extended', () {
+      PusherBeamsPlatform.instance = IllegalImplementation();
+    });
+  });
+
+  group('$PusherBeamsApi', () {
+    print('Pigeon Generated Platform API not tested in favor of integration tests');
   });
 }
 
-class IllegalImplementation implements PusherBeamsPlatform {
-  // Intentionally declare self as not a mock to trigger the
-  // compliance check.
-  @override
-  bool get isMock => false;
+class PusherBeamsPlatformMock extends Mock
+    with MockPlatformInterfaceMixin
+    implements PusherBeamsPlatform {}
+
+class ImplementsPusherBeamsPlatform extends Mock
+    implements PusherBeamsPlatform {}
+
+class IllegalImplementation extends PusherBeamsPlatform {
 
   @override
   Future<void> addDeviceInterest(String interest) {
