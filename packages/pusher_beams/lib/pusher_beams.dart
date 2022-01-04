@@ -5,14 +5,14 @@ import 'package:pusher_beams_platform_interface/method_channel_pusher_beams.dart
 import 'package:pusher_beams_platform_interface/pusher_beams_platform_interface.dart';
 import 'package:uuid/uuid.dart';
 
-export 'package:pusher_beams_platform_interface/method_channel_pusher_beams.dart' show BeamsAuthProvider;
+export 'package:pusher_beams_platform_interface/method_channel_pusher_beams.dart'
+    show BeamsAuthProvider;
 
 const _uuid = Uuid();
 
 /// App-facing Implementation for [PusherBeamsPlatform] plugin.
 /// It's designed to be a singleton and must be consumed with [PusherBeams.instance].
 class PusherBeams extends PusherBeamsPlatform with CallbackHandlerApi {
-
   /// Stores the ids and the [Function]s to call back.
   static final Map<String, Function> _callbacks = {};
 
@@ -195,14 +195,16 @@ class PusherBeams extends PusherBeamsPlatform with CallbackHandlerApi {
   ///
   /// Throws an [Exception] in case of failure.
   @override
-  Future<void> setUserId(String userId, BeamsAuthProvider provider, OnUserCallback callback) async {
+  Future<void> setUserId(String userId, BeamsAuthProvider provider,
+      OnUserCallback callback) async {
     final callbackId = _uuid.v4();
 
     if (!kIsWeb) {
       _callbacks[callbackId] = callback;
     }
 
-    await _pusherBeamsApi.setUserId(userId, provider, kIsWeb ? callback : callbackId);
+    await _pusherBeamsApi.setUserId(
+        userId, provider, kIsWeb ? callback : callbackId);
   }
 
   /// This function register this device to *Pusher Beams* service with the given [instanceId].
@@ -254,7 +256,7 @@ class PusherBeams extends PusherBeamsPlatform with CallbackHandlerApi {
   void handleCallback(String callbackId, String callbackName, List args) {
     final callback = _callbacks[callbackId]!;
 
-    switch(callbackName) {
+    switch (callbackName) {
       case "onInterestChanges":
         callback((args[0] as List<Object?>).cast<String>());
         return;

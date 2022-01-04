@@ -6,7 +6,8 @@ import 'package:pusher_beams/pusher_beams.dart';
 void main() async {
   runApp(const MyApp());
 
-  await PusherBeams.instance.start('your-instance-id'); // Supply your own instanceId
+  await PusherBeams.instance
+      .start('your-instance-id'); // Supply your own instanceId
 }
 
 class MyApp extends StatefulWidget {
@@ -17,32 +18,28 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   initState() {
     super.initState();
 
     initPusherBeams();
   }
-  
+
   getSecure() async {
     final BeamsAuthProvider provider = BeamsAuthProvider()
       ..authUrl = 'https://some-auth-url.com/secure'
-      ..headers = {
-        'Content-Type': 'application/json'
-      }
-      ..queryParams = {
-        'page': '1'
-      }
+      ..headers = {'Content-Type': 'application/json'}
+      ..queryParams = {'page': '1'}
       ..credentials = 'omit';
 
-    await PusherBeams.instance.setUserId('THIS IS AN USER ID', provider, (error) => {
-      if (error != null) {
-        print(error)
-      }
+    await PusherBeams.instance.setUserId(
+        'THIS IS AN USER ID',
+        provider,
+        (error) => {
+              if (error != null) {print(error)}
 
-      // Success! Do something...
-    });
+              // Success! Do something...
+            });
   }
 
   initPusherBeams() async {
@@ -51,9 +48,8 @@ class _MyAppState extends State<MyApp> {
 
     // This is not intented to use in web
     if (!kIsWeb) {
-      await PusherBeams.instance.onInterestChanges((interests) => {
-        print('Interests: $interests')
-      });
+      await PusherBeams.instance
+          .onInterestChanges((interests) => {print('Interests: $interests')});
     }
   }
 
@@ -69,43 +65,27 @@ class _MyAppState extends State<MyApp> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             OutlinedButton(
-              onPressed: () async {
-                await PusherBeams.instance.addDeviceInterest('bananas');
-              },
-              child: const Text(
-                'I like bananas'
-              )
-            ),
+                onPressed: () async {
+                  await PusherBeams.instance.addDeviceInterest('bananas');
+                },
+                child: const Text('I like bananas')),
             OutlinedButton(
                 onPressed: () async {
                   await PusherBeams.instance.addDeviceInterest('apples');
                 },
-                child: const Text(
-                    'I like apples'
-                )
-            ),
+                child: const Text('I like apples')),
             OutlinedButton(
                 onPressed: () async {
                   await PusherBeams.instance.addDeviceInterest('garlic');
                 },
-                child: const Text(
-                    'I like garlic'
-                )
-            ),
+                child: const Text('I like garlic')),
             OutlinedButton(
-                onPressed: getSecure,
-                child: const Text(
-                    'Get Secure'
-                )
-            ),
+                onPressed: getSecure, child: const Text('Get Secure')),
             OutlinedButton(
                 onPressed: () async {
                   await PusherBeams.instance.clearDeviceInterests();
                 },
-                child: const Text(
-                    'Clear my interests'
-                )
-            )
+                child: const Text('Clear my interests'))
           ],
         ),
       ),

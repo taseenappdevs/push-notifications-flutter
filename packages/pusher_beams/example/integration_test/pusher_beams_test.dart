@@ -7,11 +7,7 @@ const instanceId = 'your-instance-id';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  const List<String> interestToTest = [
-    'test-1',
-    'test-2',
-    'test-3'
-  ];
+  const List<String> interestToTest = ['test-1', 'test-2', 'test-3'];
 
   const String individualInterest = 'test-4';
 
@@ -33,7 +29,8 @@ void main() {
     });
 
     testWidgets('getDeviceInterests', (WidgetTester tester) async {
-      final List<String?> interests = await PusherBeams.instance.getDeviceInterests();
+      final List<String?> interests =
+          await PusherBeams.instance.getDeviceInterests();
 
       expect(interests, []);
     });
@@ -41,7 +38,8 @@ void main() {
     testWidgets('clearDeviceInterests', (WidgetTester tester) async {
       await PusherBeams.instance.clearDeviceInterests();
 
-      final List<String?> interests = await PusherBeams.instance.getDeviceInterests();
+      final List<String?> interests =
+          await PusherBeams.instance.getDeviceInterests();
 
       expect(interests.length, 0);
     });

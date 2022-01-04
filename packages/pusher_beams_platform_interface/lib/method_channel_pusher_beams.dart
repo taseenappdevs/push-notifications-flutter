@@ -28,8 +28,10 @@ class BeamsAuthProvider {
     final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
     return BeamsAuthProvider()
       ..authUrl = pigeonMap['authUrl'] as String?
-      ..headers = (pigeonMap['headers'] as Map<Object?, Object?>?)?.cast<String?, String?>()
-      ..queryParams = (pigeonMap['queryParams'] as Map<Object?, Object?>?)?.cast<String?, String?>()
+      ..headers = (pigeonMap['headers'] as Map<Object?, Object?>?)
+          ?.cast<String?, String?>()
+      ..queryParams = (pigeonMap['queryParams'] as Map<Object?, Object?>?)
+          ?.cast<String?, String?>()
       ..credentials = pigeonMap['credentials'] as String?;
   }
 }
@@ -41,20 +43,19 @@ class _PusherBeamsApiCodec extends StandardMessageCodec {
     if (value is BeamsAuthProvider) {
       buffer.putUint8(128);
       writeValue(buffer, value.encode());
-    } else 
-{
+    } else {
       super.writeValue(buffer, value);
     }
   }
+
   @override
   Object? readValueOfType(int type, ReadBuffer buffer) {
     switch (type) {
-      case 128:       
+      case 128:
         return BeamsAuthProvider.decode(readValue(buffer)!);
-      
-      default:      
+
+      default:
         return super.readValueOfType(type, buffer);
-      
     }
   }
 }
@@ -63,7 +64,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
   /// Constructor for [PusherBeamsApi].  The [binaryMessenger] named argument is
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
-  PusherBeamsApi({BinaryMessenger? binaryMessenger}) : _binaryMessenger = binaryMessenger;
+  PusherBeamsApi({BinaryMessenger? binaryMessenger})
+      : _binaryMessenger = binaryMessenger;
 
   final BinaryMessenger? _binaryMessenger;
 
@@ -71,7 +73,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
 
   Future<void> start(String arg_instanceId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.PusherBeamsApi.start', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.PusherBeamsApi.start', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object>[arg_instanceId]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -81,7 +84,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
         details: null,
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -94,7 +98,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
 
   Future<void> addDeviceInterest(String arg_interest) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.PusherBeamsApi.addDeviceInterest', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.PusherBeamsApi.addDeviceInterest', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object>[arg_interest]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -104,7 +109,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
         details: null,
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -117,7 +123,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
 
   Future<void> removeDeviceInterest(String arg_interest) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.PusherBeamsApi.removeDeviceInterest', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.PusherBeamsApi.removeDeviceInterest', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object>[arg_interest]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -127,7 +134,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
         details: null,
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -140,7 +148,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
 
   Future<List<String?>> getDeviceInterests() async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.PusherBeamsApi.getDeviceInterests', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.PusherBeamsApi.getDeviceInterests', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(null) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -150,7 +159,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
         details: null,
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -163,7 +173,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
 
   Future<void> setDeviceInterests(List<String?> arg_interests) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.PusherBeamsApi.setDeviceInterests', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.PusherBeamsApi.setDeviceInterests', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object>[arg_interests]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -173,7 +184,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
         details: null,
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -186,7 +198,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
 
   Future<void> clearDeviceInterests() async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.PusherBeamsApi.clearDeviceInterests', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.PusherBeamsApi.clearDeviceInterests', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(null) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -196,7 +209,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
         details: null,
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -209,7 +223,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
 
   Future<void> onInterestChanges(dynamic arg_callbackId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.PusherBeamsApi.onInterestChanges', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.PusherBeamsApi.onInterestChanges', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object>[arg_callbackId]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -219,7 +234,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
         details: null,
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -230,11 +246,14 @@ class PusherBeamsApi extends PusherBeamsPlatform {
     }
   }
 
-  Future<void> setUserId(String arg_userId, BeamsAuthProvider arg_provider, dynamic arg_callbackId) async {
+  Future<void> setUserId(String arg_userId, BeamsAuthProvider arg_provider,
+      dynamic arg_callbackId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.PusherBeamsApi.setUserId', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.PusherBeamsApi.setUserId', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
-        await channel.send(<Object>[arg_userId, arg_provider, arg_callbackId]) as Map<Object?, Object?>?;
+        await channel.send(<Object>[arg_userId, arg_provider, arg_callbackId])
+            as Map<Object?, Object?>?;
     if (replyMap == null) {
       throw PlatformException(
         code: 'channel-error',
@@ -242,7 +261,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
         details: null,
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -255,7 +275,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
 
   Future<void> clearAllState() async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.PusherBeamsApi.clearAllState', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.PusherBeamsApi.clearAllState', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(null) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -265,7 +286,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
         details: null,
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -278,7 +300,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
 
   Future<void> stop() async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.PusherBeamsApi.stop', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.PusherBeamsApi.stop', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(null) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -288,7 +311,8 @@ class PusherBeamsApi extends PusherBeamsPlatform {
         details: null,
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -303,10 +327,12 @@ class PusherBeamsApi extends PusherBeamsPlatform {
 class _CallbackHandlerApiCodec extends StandardMessageCodec {
   const _CallbackHandlerApiCodec();
 }
+
 abstract class CallbackHandlerApi {
   static const MessageCodec<Object?> codec = _CallbackHandlerApiCodec();
 
-  void handleCallback(String callbackId, String callbackName, List<Object?> args);
+  void handleCallback(
+      String callbackId, String callbackName, List<Object?> args);
   static void setup(CallbackHandlerApi? api) {
     {
       const BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
@@ -315,14 +341,18 @@ abstract class CallbackHandlerApi {
         channel.setMessageHandler(null);
       } else {
         channel.setMessageHandler((Object? message) async {
-          assert(message != null, 'Argument for dev.flutter.pigeon.CallbackHandlerApi.handleCallback was null.');
+          assert(message != null,
+              'Argument for dev.flutter.pigeon.CallbackHandlerApi.handleCallback was null.');
           final List<Object?> args = (message as List<Object?>?)!;
           final String? arg_callbackId = args[0] as String?;
-          assert(arg_callbackId != null, 'Argument for dev.flutter.pigeon.CallbackHandlerApi.handleCallback was null, expected non-null String.');
+          assert(arg_callbackId != null,
+              'Argument for dev.flutter.pigeon.CallbackHandlerApi.handleCallback was null, expected non-null String.');
           final String? arg_callbackName = args[1] as String?;
-          assert(arg_callbackName != null, 'Argument for dev.flutter.pigeon.CallbackHandlerApi.handleCallback was null, expected non-null String.');
+          assert(arg_callbackName != null,
+              'Argument for dev.flutter.pigeon.CallbackHandlerApi.handleCallback was null, expected non-null String.');
           final List<Object?>? arg_args = args[2] as List<Object?>?;
-          assert(arg_args != null, 'Argument for dev.flutter.pigeon.CallbackHandlerApi.handleCallback was null, expected non-null List<Object?>.');
+          assert(arg_args != null,
+              'Argument for dev.flutter.pigeon.CallbackHandlerApi.handleCallback was null, expected non-null List<Object?>.');
           api.handleCallback(arg_callbackId!, arg_callbackName!, arg_args!);
           return;
         });

@@ -1,7 +1,7 @@
 name: pusher_beams_web
-description: A new flutter plugin project.
-version: 0.0.1
-repository: https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams_web
+description: The Web implementation from Pusher Beams for Flutter, intended to be a platform-specific package.
+version: 1.0.0
+repository: https://github.com/pusher/flutter_pusher_beams
 issue_tracker: https://github.com/pusher/flutter_pusher_beams/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+web%22
 
 environment:
@@ -13,8 +13,7 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-  pusher_beams_platform_interface:
-    path: ../pusher_beams_platform_interface # CHANGE FOR VERSION ONCE PUBLISHED
+  pusher_beams_platform_interface: ^1.0.2
   js: ^0.6.3
   uuid: ^3.0.5
 
