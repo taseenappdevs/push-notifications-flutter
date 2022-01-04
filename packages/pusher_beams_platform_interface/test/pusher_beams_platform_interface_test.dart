@@ -32,7 +32,8 @@ void main() {
   });
 
   group('$PusherBeamsApi', () {
-    print('Pigeon Generated Platform API not tested in favor of integration tests');
+    print(
+        'Pigeon Generated Platform API not tested in favor of integration tests');
   });
 }
 
@@ -44,7 +45,6 @@ class ImplementsPusherBeamsPlatform extends Mock
     implements PusherBeamsPlatform {}
 
 class IllegalImplementation extends PusherBeamsPlatform {
-
   @override
   Future<void> addDeviceInterest(String interest) {
     throw UnimplementedError();
@@ -81,7 +81,8 @@ class IllegalImplementation extends PusherBeamsPlatform {
   }
 
   @override
-  Future<void> setUserId(String userId, BeamsAuthProvider provider, OnUserCallback callback) {
+  Future<void> setUserId(
+      String userId, BeamsAuthProvider provider, OnUserCallback callback) {
     throw UnimplementedError();
   }
 
@@ -94,5 +95,4 @@ class IllegalImplementation extends PusherBeamsPlatform {
   Future<void> stop() {
     throw UnimplementedError();
   }
-
 }

@@ -8,7 +8,7 @@ import 'package:pusher_beams_platform_interface/pusher_beams_platform_interface.
 import 'package:pusher_beams_web/pusher_beams.dart';
 import 'package:uuid/uuid.dart';
 
-const uuid =  Uuid();
+const uuid = Uuid();
 
 /// A web implementation for [PusherBeamsPlatform] plugin.
 /// This is designed to be a singleton and must be consumed with [PusherBeams.instance].
@@ -52,7 +52,8 @@ class PusherBeams extends PusherBeamsPlatform {
   /// Throws [NullRejectionException] or [Exception] in case the JS promise fails.
   @override
   Future<List<String?>> getDeviceInterests() async {
-    final List<dynamic> interests = await promiseToFuture(_beamsClient!.getDeviceInterests());
+    final List<dynamic> interests =
+        await promiseToFuture(_beamsClient!.getDeviceInterests());
 
     return interests.cast<String?>();
   }
@@ -82,14 +83,14 @@ class PusherBeams extends PusherBeamsPlatform {
   /// You must create a [BeamsAuthProvider] in order to pass the [provider] argument.
   /// Throws [NullRejectionException] or [Exception] in case the JS promise fails.
   @override
-  Future<void> setUserId(String userId, BeamsAuthProvider provider, OnUserCallback callback) async {
+  Future<void> setUserId(String userId, BeamsAuthProvider provider,
+      OnUserCallback callback) async {
     try {
       final TokenProvider tokenProvider = TokenProvider(TokenProviderOptions(
           url: provider.authUrl!,
           queryParams: provider.queryParams,
           headers: provider.headers,
-          credentials: provider.credentials
-      ));
+          credentials: provider.credentials));
 
       await promiseToFuture(_beamsClient!.setUserId(userId, tokenProvider));
 
@@ -118,7 +119,8 @@ class PusherBeams extends PusherBeamsPlatform {
 
     if (!_scriptReady) {
       final pusherBeamsTag = html.ScriptElement();
-      pusherBeamsTag.src = 'https://js.pusher.com/beams/1.0/push-notifications-cdn.js';
+      pusherBeamsTag.src =
+          'https://js.pusher.com/beams/1.0/push-notifications-cdn.js';
 
       final headElement = html.querySelector('head');
       headElement!.insertBefore(pusherBeamsTag, headElement.lastChild!);
@@ -127,9 +129,8 @@ class PusherBeams extends PusherBeamsPlatform {
       _scriptReady = true;
     }
 
-    _beamsClient ??= PusherBeamsClient(PusherBeamsClientOptions(
-        instanceId: instanceUuid
-    ));
+    _beamsClient ??=
+        PusherBeamsClient(PusherBeamsClientOptions(instanceId: instanceUuid));
 
     await promiseToFuture(_beamsClient!.start());
   }

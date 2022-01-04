@@ -37,7 +37,8 @@ abstract class PusherBeamsPlatform extends PlatformInterface {
   }
 
   Future<void> removeDeviceInterest(String interest) {
-    throw UnimplementedError('removeDeviceInterest() has not been implemented.');
+    throw UnimplementedError(
+        'removeDeviceInterest() has not been implemented.');
   }
 
   Future<List<String?>> getDeviceInterests() {
@@ -49,14 +50,16 @@ abstract class PusherBeamsPlatform extends PlatformInterface {
   }
 
   Future<void> clearDeviceInterests() {
-    throw UnimplementedError('clearDeviceInterests() has not been implemented.');
+    throw UnimplementedError(
+        'clearDeviceInterests() has not been implemented.');
   }
 
   Future<void> onInterestChanges(OnInterestsChange callback) {
     throw UnimplementedError('onInterestChanges() has not been implemented.');
   }
 
-  Future<void> setUserId(String userId, BeamsAuthProvider provider, OnUserCallback callback) {
+  Future<void> setUserId(
+      String userId, BeamsAuthProvider provider, OnUserCallback callback) {
     throw UnimplementedError('setUserId() has not been implemented.');
   }
 
