@@ -1,7 +1,8 @@
 name: pusher_beams
-description: A new flutter plugin project.
-version: 0.0.1
-homepage:
+description: Official Flutter Plugin for Pusher Beams, receive notifications easily on your Flutter application with Pusher Beams.
+version: 1.0.0
+repository: https://github.com/pusher/flutter_pusher_beams
+issue_tracker: https://github.com/pusher/flutter_pusher_beams/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+web%22
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -10,16 +11,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  pusher_beams_platform_interface:
-    path: ../packages/pusher_beams_platform_interface # CHANGE FOR VERSION ONCE PUBLISHED
-  pusher_beams_web:
-    path: ../packages/pusher_beams_web # CHANGE FOR VERSION ONCE PUBLISHED
+  pusher_beams_platform_interface: ^1.0.2
+  pusher_beams_web: ^1.0.0
+  pusher_beams_android: ^1.0.0
+  pusher_beams_ios: ^1.0.0
+  uuid: ^3.0.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
-  pigeon: ^1.0.7
+  mockito: ^5.0.16
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -33,10 +35,9 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.pusher.pusher_beams
-        pluginClass: PusherBeamsPlugin
+        default_package: pusher_beams_android
       ios:
-        pluginClass: PusherBeamsPlugin
+        default_package: pusher_beams_ios
       web:
         default_package: pusher_beams_web
 

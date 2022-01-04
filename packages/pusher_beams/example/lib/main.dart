@@ -1,11 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:pusher_beams/pusher_beams.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
+
+  await PusherBeams.instance
+      .start('your-instance-id'); // Supply your own instanceId
 }
 
 class MyApp extends StatefulWidget {
@@ -16,34 +18,39 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-
   @override
-  void initState() {
+  initState() {
     super.initState();
-    initPlatformState();
+
+    initPusherBeams();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await PusherBeams.platformVersion ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
+  getSecure() async {
+    final BeamsAuthProvider provider = BeamsAuthProvider()
+      ..authUrl = 'https://some-auth-url.com/secure'
+      ..headers = {'Content-Type': 'application/json'}
+      ..queryParams = {'page': '1'}
+      ..credentials = 'omit';
+
+    await PusherBeams.instance.setUserId(
+        'THIS IS AN USER ID',
+        provider,
+        (error) => {
+              if (error != null) {print(error)}
+
+              // Success! Do something...
+            });
+  }
+
+  initPusherBeams() async {
+    // Let's see our current interests
+    print(await PusherBeams.instance.getDeviceInterests());
+
+    // This is not intented to use in web
+    if (!kIsWeb) {
+      await PusherBeams.instance
+          .onInterestChanges((interests) => {print('Interests: $interests')});
     }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
   }
 
   @override
@@ -53,8 +60,33 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            OutlinedButton(
+                onPressed: () async {
+                  await PusherBeams.instance.addDeviceInterest('bananas');
+                },
+                child: const Text('I like bananas')),
+            OutlinedButton(
+                onPressed: () async {
+                  await PusherBeams.instance.addDeviceInterest('apples');
+                },
+                child: const Text('I like apples')),
+            OutlinedButton(
+                onPressed: () async {
+                  await PusherBeams.instance.addDeviceInterest('garlic');
+                },
+                child: const Text('I like garlic')),
+            OutlinedButton(
+                onPressed: getSecure, child: const Text('Get Secure')),
+            OutlinedButton(
+                onPressed: () async {
+                  await PusherBeams.instance.clearDeviceInterests();
+                },
+                child: const Text('Clear my interests'))
+          ],
         ),
       ),
     );

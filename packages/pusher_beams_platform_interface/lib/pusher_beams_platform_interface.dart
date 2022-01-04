@@ -1,19 +1,19 @@
 library pusher_beams_platform_interface;
 
+import 'package:flutter/foundation.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:pusher_beams_platform_interface/method_channel_pusher_beams.dart';
 
 typedef OnUserCallback = Function(String? error);
-typedef OnInterestsChange = Function(List<String>? interests);
-
-class DefaultPlatform extends PusherBeamsPlatform {}
+typedef OnInterestsChange = Function(List<String?> interests);
 
 abstract class PusherBeamsPlatform extends PlatformInterface {
   PusherBeamsPlatform() : super(token: _token);
 
   static final Object _token = Object();
 
-  static PusherBeamsPlatform _instance = DefaultPlatform();
+  // NOTE: Remember to change .onInterestChanges and .setUserId last argument to dynamic on MethodChannel
+  static PusherBeamsPlatform _instance = PusherBeamsApi();
 
   /// The default instance of [PusherBeamsPlatform] to use.
   ///
@@ -28,12 +28,8 @@ abstract class PusherBeamsPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<void> start() {
+  Future<void> start(String instanceId) {
     throw UnimplementedError('start() has not been implemented.');
-  }
-
-  Future<String> getDeviceId() {
-    throw UnimplementedError('getDeviceId() has not been implemented.');
   }
 
   Future<void> addDeviceInterest(String interest) {
@@ -41,7 +37,8 @@ abstract class PusherBeamsPlatform extends PlatformInterface {
   }
 
   Future<void> removeDeviceInterest(String interest) {
-    throw UnimplementedError('removeDeviceInterest() has not been implemented.');
+    throw UnimplementedError(
+        'removeDeviceInterest() has not been implemented.');
   }
 
   Future<List<String?>> getDeviceInterests() {
@@ -53,14 +50,16 @@ abstract class PusherBeamsPlatform extends PlatformInterface {
   }
 
   Future<void> clearDeviceInterests() {
-    throw UnimplementedError('clearDeviceInterests() has not been implemented.');
+    throw UnimplementedError(
+        'clearDeviceInterests() has not been implemented.');
   }
 
   Future<void> onInterestChanges(OnInterestsChange callback) {
     throw UnimplementedError('onInterestChanges() has not been implemented.');
   }
 
-  Future<void> setUserId(String userId, BeamsTokenProvider provider, OnUserCallback callback) {
+  Future<void> setUserId(
+      String userId, BeamsAuthProvider provider, OnUserCallback callback) {
     throw UnimplementedError('setUserId() has not been implemented.');
   }
 

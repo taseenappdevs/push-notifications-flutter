@@ -1,7 +1,8 @@
 name: pusher_beams_web
-description: A new flutter plugin project.
-version: 0.0.1
-homepage:
+description: The Web implementation from Pusher Beams for Flutter, intended to be a platform-specific package.
+version: 1.0.0
+repository: https://github.com/pusher/flutter_pusher_beams
+issue_tracker: https://github.com/pusher/flutter_pusher_beams/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+web%22
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -12,8 +13,9 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-  pusher_beams_platform_interface:
-    path: ../packages/pusher_beams_platform_interface # CHANGE FOR VERSION ONCE PUBLISHED
+  pusher_beams_platform_interface: ^1.0.2
+  js: ^0.6.3
+  uuid: ^3.0.5
 
 dev_dependencies:
   flutter_test:
@@ -33,13 +35,12 @@ flutter:
     implements: pusher_beams
     platforms:
       web:
-        pluginClass: PusherBeamsWebWeb
-        fileName: pusher_beams_web_web.dart
+        pluginClass: PusherBeams
+        fileName: pusher_beams_web.dart
 
   # To add assets to your plugin package, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  #  assets:
+  #    - assets/service-worker.js
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages
