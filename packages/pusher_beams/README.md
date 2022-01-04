@@ -30,7 +30,7 @@ Official Flutter Plugin for [Pusher Beams](https://pusher.com/beams) using [Pige
 
 
 ## Architecture
-This plugin was developed based on the [Federated Plugin Architecture](https://docs.google.com/document/d/1LD7QjmzJZLCopUrFAAE98wOUQpjmguyGTN2wd_89Srs/edit?usp=sharing), the following packages are included in the plugin:
+This plugin was developed based on the [Federated Plugin Architecture](https://docs.google.com/document/d/1LD7QjmzJZLCopUrFAAE98wOUQpjmguyGTN2wd_89Srs/edit?usp=sharing), following packages are included in the plugin:
 
 - [pusher_beams](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams): This is intended to be the main or _app-facing package_. **You must install this package in order to use it**.
 - [pusher_beams_platform_interface](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams_platform_interface): This is the _platform package interface_ that glues [pusher_beams](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams) and platform packages.
@@ -84,7 +84,7 @@ In order to install this plugin, you must:
   - If you're installing this plugin within a fresh Flutter Application, you might use the [CLI initialization](https://firebase.flutter.dev/docs/cli)
   - If you're already using FlutterFire before the [dart-only initialization](https://firebase.flutter.dev/docs/overview#initializing-flutterfire), you may want to [migrate to dart-only](https://firebase.flutter.dev/docs/manual-installation#migrating-to-dart-only-initialization).
   
-**Note: You may skip this if you have already installed [FlutterFire](https://firebase.flutter.dev/) and you're implementing [firebase_messaging](https://pub.dev/packages/firebase_messaging)**
+**Note: You may skip this if you have already installed [FlutterFire](https://firebase.flutter.dev/) and you're implementing [firebase_messaging](https://pub.dev/packages/firebase_messaging)** on your Flutter application.
 
 ### Android Additional
 - [Enable Multidex](https://firebase.flutter.dev/docs/manual-installation/android#enabling-multidex) (If your `minSdkVersion` is lower than 21)
@@ -123,6 +123,23 @@ If you want to see the API reference in-depth, you may want to see the [Official
 
 ## Contributing
 In order to contribute you must first read [how to develop flutter plugins](https://docs.flutter.dev/development/packages-and-plugins/developing-packages#plugin), this is the basic knowledge to start.
+
+This repository is following [git flow branching model](https://nvie.com/posts/a-successful-git-branching-model/), so in order to contribute, once you fork this project, you must create a _fix/_ or _feature/_ branch, which will be pull requested from you once it's ready.
+
+
+Commits follows the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) standard, which scopes are the follow:
+
+- **pusher_beams**: For [pusher_beams](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams) code commits.
+- **web**: For [pusher_beams_web](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams_web) code commits.
+- **ios**: For [pusher_beams_ios](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_ios) code commits.
+- **android**: For [pusher_beams_android](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams_android) code commits.
+- **interface**: For [pusher_beams_platform_interface](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams_platform_interface) code commits.
+
+So, in order to commit something you must use a commit message like below:
+
+```
+feat(android): i did something to android code :0
+```
 
 ### Developing Environment
 - [Flutter](https://flutter.dev/) >= 2.x.x (running `flutter doctor` will check if everything is good to start)
