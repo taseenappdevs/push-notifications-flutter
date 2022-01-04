@@ -2,7 +2,7 @@ name: pusher_beams
 description: Official Flutter Plugin for Pusher Beams, receive notifications easily on your Flutter application with Pusher Beams.
 version: 1.0.0
 repository: https://github.com/pusher/flutter_pusher_beams
-issue_tracker: https://github.com/pusher/flutter_pusher_beams/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+web%22
+issue_tracker: https://github.com/pusher/flutter_pusher_beams/issues
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

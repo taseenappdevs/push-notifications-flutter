@@ -43,16 +43,16 @@ This is the comparison table of functions implemented within this plugin accordi
 
 |                      | **iOS** | **Android** | **Web** |
 |----------------------|-----|---------|-----|
-| [addDeviceInterest]()    | ✅   | ✅       | ✅   |
-| [clearAllState]()        | ✅   | ✅       | ✅   |
-| [clearDeviceInterests]() | ✅   | ✅       | ✅   |
-| [getDeviceInterests]()   | ✅   | ✅       | ✅   |
-| [onInterestChanges]()    | ✅   | ✅       | ⬜️   |
-| [removeDeviceInterest]() | ✅   | ✅       | ✅   |
-| [setDeviceInterests]()   | ✅   | ✅       | ✅   |
-| [setUserId]()            | ✅   | ✅       | ✅   |
-| [start]()                | ✅   | ✅       | ✅   |
-| [stop]()                 | ✅   | ✅       | ✅   |
+| [addDeviceInterest](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/addDeviceInterest.html)    | ✅   | ✅       | ✅   |
+| [clearAllState](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/clearAllState.html)        | ✅   | ✅       | ✅   |
+| [clearDeviceInterests](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/clearDeviceInterests.html) | ✅   | ✅       | ✅   |
+| [getDeviceInterests](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/getDeviceInterests.html)   | ✅   | ✅       | ✅   |
+| [onInterestChanges](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/onInterestChanges.html)    | ✅   | ✅       | ⬜️   |
+| [removeDeviceInterest](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/removeDeviceInterest.html) | ✅   | ✅       | ✅   |
+| [setDeviceInterests](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/setDeviceInterests.html)   | ✅   | ✅       | ✅   |
+| [setUserId](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/setUserId.html)            | ✅   | ✅       | ✅   |
+| [start](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/start.html)                | ✅   | ✅       | ✅   |
+| [stop](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/stop.html)                 | ✅   | ✅       | ✅   |
 
 ## Platform Support
 This plugin supports Web, Android and iOS platforms.
