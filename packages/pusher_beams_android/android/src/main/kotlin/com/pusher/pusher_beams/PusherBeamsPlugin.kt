@@ -29,26 +29,26 @@ class PusherBeamsPlugin: FlutterPlugin, Messages.PusherBeamsApi {
     callbackHandlerApi = Messages.CallbackHandlerApi(binding.binaryMessenger)
   }
 
-  override fun start(instanceId: kotlin.String) {
+  override fun start(instanceId: String) {
     PushNotifications.start(this.context, instanceId)
     Log.d(this.toString(), "PusherBeams started with $instanceId instanceId")
   }
 
-  override fun addDeviceInterest(interest: kotlin.String) {
+  override fun addDeviceInterest(interest: String) {
     PushNotifications.addDeviceInterest(interest)
     Log.d(this.toString(), "Added device to interest: $interest")
   }
 
-  override fun removeDeviceInterest(interest: kotlin.String) {
+  override fun removeDeviceInterest(interest: String) {
     PushNotifications.removeDeviceInterest(interest)
     Log.d(this.toString(), "Removed device to interest: $interest")
   }
 
-  override fun getDeviceInterests(): kotlin.collections.List<kotlin.String> {
+  override fun getDeviceInterests(): kotlin.collections.List<String> {
     return PushNotifications.getDeviceInterests().toList()
   }
 
-  override fun setDeviceInterests(interests: kotlin.collections.List<kotlin.String>) {
+  override fun setDeviceInterests(interests: kotlin.collections.List<String>) {
     PushNotifications.setDeviceInterests(interests.toSet())
     Log.d(this.toString(), "$interests added to device")
   }
@@ -58,7 +58,7 @@ class PusherBeamsPlugin: FlutterPlugin, Messages.PusherBeamsApi {
     Log.d(this.toString(), "Cleared device interests")
   }
 
-  override fun onInterestChanges(callbackId: kotlin.String) {
+  override fun onInterestChanges(callbackId: String) {
     if (!alreadyInterestsListener) {
       PushNotifications.setOnDeviceInterestsChangedListener(object: SubscriptionsChangedListener {
         override fun onSubscriptionsChanged(interests: Set<String>) {
@@ -71,9 +71,9 @@ class PusherBeamsPlugin: FlutterPlugin, Messages.PusherBeamsApi {
   }
 
   override fun setUserId(
-    userId: kotlin.String,
+    userId: String,
     provider: Messages.BeamsAuthProvider,
-    callbackId: kotlin.String
+    callbackId: String
   ) {
     val tokenProvider = BeamsTokenProvider(
       provider.authUrl,
