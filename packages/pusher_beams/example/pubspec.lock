@@ -78,48 +78,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.2"
-  firebase_core:
-    dependency: "direct main"
-    description:
-      name: firebase_core
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.10.1"
-  firebase_core_platform_interface:
-    dependency: transitive
-    description:
-      name: firebase_core_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.2.0"
-  firebase_core_web:
-    dependency: transitive
-    description:
-      name: firebase_core_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.3.0"
-  firebase_messaging:
-    dependency: "direct main"
-    description:
-      name: firebase_messaging
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "11.2.0"
-  firebase_messaging_platform_interface:
-    dependency: transitive
-    description:
-      name: firebase_messaging_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.1.0"
-  firebase_messaging_web:
-    dependency: transitive
-    description:
-      name: firebase_messaging_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -219,35 +177,35 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.1"
+    version: "1.0.0"
   pusher_beams_android:
     dependency: transitive
     description:
-      path: "../../pusher_beams_android"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: pusher_beams_android
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   pusher_beams_ios:
     dependency: transitive
     description:
-      path: "../../pusher_beams_ios"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: pusher_beams_ios
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   pusher_beams_platform_interface:
     dependency: transitive
     description:
-      path: "../../pusher_beams_platform_interface"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: pusher_beams_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   pusher_beams_web:
     dependency: transitive
     description:
-      path: "../../pusher_beams_web"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: pusher_beams_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   sky_engine:
     dependency: transitive
     description: flutter

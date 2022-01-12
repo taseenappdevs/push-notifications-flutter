@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:pusher_beams/pusher_beams.dart';
 
 void main() async {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
 
   await PusherBeams.instance
       .start('your-instance-id'); // Supply your own instanceId
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
