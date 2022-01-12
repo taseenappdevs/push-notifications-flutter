@@ -21,7 +21,6 @@ class PusherBeams extends PusherBeamsPlatform {
   static PusherBeams get instance => _instance;
 
   static PusherBeamsClient? _beamsClient;
-  static bool _scriptReady = false;
 
   static void registerWith(Registrar registrar) {
     PusherBeamsPlatform.instance = PusherBeams.instance;
@@ -116,18 +115,6 @@ class PusherBeams extends PusherBeamsPlatform {
   @override
   Future<void> start(String instanceId) async {
     final instanceUuid = UuidValue(instanceId).toString();
-
-    if (!_scriptReady) {
-      final pusherBeamsTag = html.ScriptElement();
-      pusherBeamsTag.src =
-          'https://js.pusher.com/beams/1.0/push-notifications-cdn.js';
-
-      final headElement = html.querySelector('head');
-      headElement!.insertBefore(pusherBeamsTag, headElement.lastChild!);
-
-      await pusherBeamsTag.onLoad.first;
-      _scriptReady = true;
-    }
 
     _beamsClient ??=
         PusherBeamsClient(PusherBeamsClientOptions(instanceId: instanceUuid));
