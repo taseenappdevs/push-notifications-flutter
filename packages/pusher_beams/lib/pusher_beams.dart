@@ -277,7 +277,7 @@ class PusherBeams extends PusherBeamsPlatform with CallbackHandlerApi {
         callback(args[0] as String?);
         return;
       case "onMessageReceivedInTheForeground":
-        callback(args[0] as Map<String?, String?>?);
+        callback((args[0] as Map<Object?, Object?>));
         return;
       default:
         callback();
