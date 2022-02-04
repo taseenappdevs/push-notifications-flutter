@@ -6,6 +6,7 @@ import 'package:pusher_beams_platform_interface/method_channel_pusher_beams.dart
 
 typedef OnUserCallback = Function(String? error);
 typedef OnInterestsChange = Function(List<String?> interests);
+typedef OnMessageReceivedInTheForeground = Function(Map<String?, String?> data);
 
 abstract class PusherBeamsPlatform extends PlatformInterface {
   PusherBeamsPlatform() : super(token: _token);
@@ -69,5 +70,11 @@ abstract class PusherBeamsPlatform extends PlatformInterface {
 
   Future<void> stop() {
     throw UnimplementedError('stop() has not been implemented.');
+  }
+
+  Future<void> onMessageReceivedInTheForeground(
+      OnMessageReceivedInTheForeground callback) {
+    throw UnimplementedError(
+        'onMessageReceivedInTheForeground() has not been implemented.');
   }
 }

@@ -1,7 +1,9 @@
 package com.pusher.pusher_beams
 
+import android.app.Activity
 import android.content.Context
 import androidx.annotation.NonNull
+import com.google.firebase.messaging.RemoteMessage
 import com.pusher.pushnotifications.*
 import com.pusher.pushnotifications.auth.AuthData
 import com.pusher.pushnotifications.auth.AuthDataGetter
@@ -9,11 +11,14 @@ import com.pusher.pushnotifications.auth.BeamsTokenProvider
 import io.flutter.Log
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 
 /** PusherBeamsPlugin */
-class PusherBeamsPlugin: FlutterPlugin, Messages.PusherBeamsApi {
+class PusherBeamsPlugin: FlutterPlugin, Messages.PusherBeamsApi, ActivityAware {
   private lateinit var context : Context
   private var alreadyInterestsListener : Boolean = false
+  private var currentActivity: Activity? = null
 
   private lateinit var callbackHandlerApi: Messages.CallbackHandlerApi
 
@@ -110,7 +115,35 @@ class PusherBeamsPlugin: FlutterPlugin, Messages.PusherBeamsApi {
     PushNotifications.clearAllState()
   }
 
+  override fun onMessageReceivedInTheForeground(callbackId: String) {
+    currentActivity?.let { activity ->
+        PushNotifications.setOnMessageReceivedListenerForVisibleActivity(activity, object : PushNotificationReceivedListener {
+          override fun onMessageReceived(remoteMessage: RemoteMessage) {
+            activity.runOnUiThread {
+              callbackHandlerApi.handleCallback(callbackId, "onMessageReceivedInTheForeground", listOf(remoteMessage)) {
+                Log.d(this.toString(), "Message received: ${remoteMessage.notification?.title}")
+              }
+            }
+          }
+        })
+    }
+  }
+
   override fun stop() {
     PushNotifications.stop()
+  }
+
+  override fun onAttachedToActivity(pluginBinding: ActivityPluginBinding) {
+    this.currentActivity = pluginBinding.activity;
+  }
+
+  override fun onDetachedFromActivityForConfigChanges() {
+  }
+
+  override fun onReattachedToActivityForConfigChanges(p0: ActivityPluginBinding) {
+  }
+
+  override fun onDetachedFromActivity() {
+    this.currentActivity = null;
   }
 }

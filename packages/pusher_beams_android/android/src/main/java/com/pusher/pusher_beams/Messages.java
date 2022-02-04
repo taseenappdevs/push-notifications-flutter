@@ -95,6 +95,7 @@ public class Messages {
     void onInterestChanges(String callbackId);
     void setUserId(String userId, BeamsAuthProvider provider, String callbackId);
     void clearAllState();
+    void onMessageReceivedInTheForeground(String callbackId);
     void stop();
 
     /** The codec used by PusherBeamsApi. */
@@ -302,6 +303,30 @@ public class Messages {
             Map<String, Object> wrapped = new HashMap<>();
             try {
               api.clearAllState();
+              wrapped.put("result", null);
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+            }
+            reply.reply(wrapped);
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.PusherBeamsApi.onMessageReceivedInTheForeground", getCodec());
+        if (api != null) {
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              ArrayList<Object> args = (ArrayList<Object>)message;
+              String callbackIdArg = (String)args.get(0);
+              if (callbackIdArg == null) {
+                throw new NullPointerException("callbackIdArg unexpectedly null.");
+              }
+              api.onMessageReceivedInTheForeground(callbackIdArg);
               wrapped.put("result", null);
             }
             catch (Error | RuntimeException exception) {

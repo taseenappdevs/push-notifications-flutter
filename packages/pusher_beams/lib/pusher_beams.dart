@@ -247,6 +247,19 @@ class PusherBeams extends PusherBeamsPlatform with CallbackHandlerApi {
     }
   }
 
+  @override
+  Future<void> onMessageReceivedInTheForeground(
+      OnMessageReceivedInTheForeground callback) async {
+    final callbackId = _uuid.v4();
+
+    if (!kIsWeb) {
+      _callbacks[callbackId] = callback;
+    }
+
+    await _pusherBeamsApi
+        .onMessageReceivedInTheForeground(kIsWeb ? callback : callbackId);
+  }
+
   /// Handler which receives callbacks from the native platforms.
   /// This currently supports [onInterestChanges] and [setUserId] callbacks
   /// but by default it just call the [Function] set.
@@ -262,6 +275,9 @@ class PusherBeams extends PusherBeamsPlatform with CallbackHandlerApi {
         return;
       case "setUserId":
         callback(args[0] as String?);
+        return;
+      case "onMessageReceivedInTheForeground":
+        callback(args[0] as Map<String?, String?>?);
         return;
       default:
         callback();
