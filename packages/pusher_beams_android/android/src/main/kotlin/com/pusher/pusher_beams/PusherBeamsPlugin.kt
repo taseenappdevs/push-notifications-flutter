@@ -150,7 +150,7 @@ class PusherBeamsPlugin : FlutterPlugin, Messages.PusherBeamsApi, ActivityAware 
 }
 
 fun RemoteMessage.toPusherMessage() = mapOf(
-        "title" to notification?.title,
-        "body" to notification?.body,
-        "data" to data
+    "title" to notification?.title,
+    "body" to notification?.body,
+    "data" to data
 )
