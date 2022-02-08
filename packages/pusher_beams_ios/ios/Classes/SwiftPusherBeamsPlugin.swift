@@ -2,11 +2,13 @@ import Flutter
 import UIKit
 import PushNotifications
 
-public class SwiftPusherBeamsPlugin: NSObject, FlutterPlugin, PusherBeamsApi, InterestsChangedDelegate {
+public class SwiftPusherBeamsPlugin: NSObject, FlutterPlugin, PusherBeamsApi, InterestsChangedDelegate, UNUserNotificationCenterDelegate {
     
     static var callbackHandler : CallbackHandlerApi? = nil
     
     var interestsDidChangeCallback : String? = nil
+    var messageDidReceiveInTheForegroundCallback : String? = nil
+    
     var beamsClient : PushNotifications?
     var started : Bool = false
     var deviceToken : Data? = nil
@@ -16,40 +18,33 @@ public class SwiftPusherBeamsPlugin: NSObject, FlutterPlugin, PusherBeamsApi, In
         let instance : SwiftPusherBeamsPlugin = SwiftPusherBeamsPlugin()
       
         callbackHandler = CallbackHandlerApi(binaryMessenger: messenger)
-        
-        registrar.addApplicationDelegate(instance)
-        
         PusherBeamsApiSetup(messenger, instance)
+        
+        UNUserNotificationCenter.current().delegate = instance
+        registrar.addApplicationDelegate(instance)
     }
     
     public func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        if(started) {
-            beamsClient?.registerDeviceToken(deviceToken)
-        } else {
-            self.deviceToken = deviceToken
-        }
+        print("application.didRegisterForRemoteNotificationsWithDeviceToken: \(deviceToken)")
+        beamsClient?.registerDeviceToken(deviceToken)
     }
 
     private func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        PushNotifications.shared.handleNotification(userInfo: userInfo)
+        print("application.didReceiveRemoteNotification: \(userInfo)")
+        beamsClient?.handleNotification(userInfo: userInfo)
     }
 
     private func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        PushNotifications.shared.registerForRemoteNotifications()
+        print("application.didFinishLaunchingWithOptions")
         return true
     }
     
     public func startInstanceId(_ instanceId: String, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
         beamsClient = PushNotifications(instanceId: instanceId)
         beamsClient?.delegate = self
-
         beamsClient?.start()
-
-        if(deviceToken != nil) {
-            beamsClient?.registerDeviceToken(deviceToken!)
-            deviceToken = nil
-        }
-        started = true
+        
+        beamsClient?.registerForRemoteNotifications()
     }
 
     public func addDeviceInterestInterest(_ interest: String, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
@@ -117,4 +112,28 @@ public class SwiftPusherBeamsPlugin: NSObject, FlutterPlugin, PusherBeamsApi, In
         }
         started = false
     }
+    
+    public func onMessageReceived(inTheForegroundCallbackId callbackId: String, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        messageDidReceiveInTheForegroundCallback = callbackId
+    }
+    
+    public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        if (messageDidReceiveInTheForegroundCallback != nil && SwiftPusherBeamsPlugin.callbackHandler != nil) {
+            let pusherMessage: [String : Any] = [
+                "title": notification.request.content.title,
+                "body": notification.request.content.body,
+                "data": notification.request.content.userInfo["data"]
+            ]
+            
+            SwiftPusherBeamsPlugin.callbackHandler?.handleCallbackCallbackId(messageDidReceiveInTheForegroundCallback!, callbackName: "onMessageReceivedInTheForeground", args: [pusherMessage], completion: {_ in
+                print("SwiftPusherBeamsPlugin: message received: \(pusherMessage)")
+            })
+        }
+    }
+
+    public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        // Handle the user interaction with the notification
+        // Not Implemented yet
+    }
+    
 }
