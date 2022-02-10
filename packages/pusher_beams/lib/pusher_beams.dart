@@ -247,7 +247,7 @@ class PusherBeams extends PusherBeamsPlatform with CallbackHandlerApi {
     }
   }
 
-  /// Registers a listener which calls back the [OnMessageReceivedInTheForeground] function when the app receives a push notification in the background.
+  /// Registers a listener which calls back the [OnMessageReceivedInTheForeground] function when the app receives a push notification in the foreground.
   /// **This is not implemented on web.**
   ///
   /// Notification is a map containing the following keys:
