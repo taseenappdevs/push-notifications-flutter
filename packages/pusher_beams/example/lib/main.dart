@@ -52,7 +52,26 @@ class _MyAppState extends State<MyApp> {
     if (!kIsWeb) {
       await PusherBeams.instance
           .onInterestChanges((interests) => {print('Interests: $interests')});
+
+      await PusherBeams.instance
+          .onMessageReceivedInTheForeground(_onMessageReceivedInTheForeground);
     }
+  }
+
+  void _onMessageReceivedInTheForeground(Map<Object?, Object?> data) {
+    _showAlert(data["title"].toString(), data["body"].toString());
+  }
+
+  void _showAlert(String title, String message) {
+    AlertDialog alert = AlertDialog(
+        title: Text(title), content: Text(message), actions: const []);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
