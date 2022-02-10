@@ -247,6 +247,26 @@ class PusherBeams extends PusherBeamsPlatform with CallbackHandlerApi {
     }
   }
 
+  /// Registers a listener which calls back the [OnMessageReceivedInTheForeground] function when the app receives a push notification in the background.
+  /// **This is not implemented on web.**
+  ///
+  /// Notification is a map containing the following keys:
+  ///   * title
+  ///   * body
+  ///   * data
+  ///
+  /// ## Example Usage
+  ///
+  /// ```dart
+  /// function someAsyncFunction() async {
+  ///   await PusherBeams.instance.onMessageReceivedInTheForeground((notification) => {
+  ///     print('Message received in the foreground: $notification')
+  ///   });
+  /// }
+  /// ```
+  ///
+  /// Throws an [Exception] in case of failure.
+
   @override
   Future<void> onMessageReceivedInTheForeground(
       OnMessageReceivedInTheForeground callback) async {

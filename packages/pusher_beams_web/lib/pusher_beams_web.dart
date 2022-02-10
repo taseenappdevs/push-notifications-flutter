@@ -100,8 +100,7 @@ class PusherBeams extends PusherBeamsPlatform {
     }
   }
 
-  /// Adds an [html.ScriptElement] to the main page with the Pusher Beams SDK for web.
-  /// Then it register this device to Pusher Beams service with the given [instanceId].
+  /// Register this device to Pusher Beams service with the given [instanceId].
   ///
   /// You must call this method as soon as possible in your application.
   ///
