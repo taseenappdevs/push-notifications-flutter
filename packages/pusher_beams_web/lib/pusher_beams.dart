@@ -30,6 +30,7 @@ class PusherBeamsClient {
   external Future<void> setUserId(String userId, TokenProvider provider);
   external Future<void> clearAllState();
   external Future<void> stop();
+  external Future<void> onMessageReceivedInTheForeground(String callbackId);
 }
 
 @JS()
