@@ -54,11 +54,13 @@ This is the comparison table of functions implemented within this plugin accordi
 | [clearDeviceInterests](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/clearDeviceInterests.html) | ✅   | ✅       | ✅   |
 | [getDeviceInterests](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/getDeviceInterests.html)   | ✅   | ✅       | ✅   |
 | [onInterestChanges](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/onInterestChanges.html)    | ✅   | ✅       | ⬜️   |
+| [onMessageReceivedInTheForeground](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/onMessageReceivedInTheForeground.html)    | ✅   | ✅       | ⬜️   |
 | [removeDeviceInterest](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/removeDeviceInterest.html) | ✅   | ✅       | ✅   |
 | [setDeviceInterests](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/setDeviceInterests.html)   | ✅   | ✅       | ✅   |
 | [setUserId](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/setUserId.html)            | ✅   | ✅       | ✅   |
 | [start](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/start.html)                | ✅   | ✅       | ✅   |
 | [stop](https://pub.dev/documentation/pusher_beams/latest/pusher_beams/PusherBeams/stop.html)                 | ✅   | ✅       | ✅   |
+
 
 ## Platform Support
 
