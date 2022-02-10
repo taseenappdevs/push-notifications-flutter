@@ -6,20 +6,34 @@ import 'package:pusher_beams/pusher_beams.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await PusherBeams.instance
-      .start('your-instance-id'); // Supply your own instanceId
+  await PusherBeams.instance.start(
+      '4232d328-8223-4c2a-bda3-36e4927321ce'); // Supply your own instanceId
 
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Pusher Beams Flutter Example',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const MyHomePage(title: 'Pusher Beams Flutter Example'),
+    );
+  }
 }
 
-class _MyAppState extends State<MyApp> {
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   @override
   initState() {
     super.initState();
@@ -35,7 +49,7 @@ class _MyAppState extends State<MyApp> {
       ..credentials = 'omit';
 
     await PusherBeams.instance.setUserId(
-        'THIS IS AN USER ID',
+        'user-id',
         provider,
         (error) => {
               if (error != null) {print(error)}
@@ -90,6 +104,11 @@ class _MyAppState extends State<MyApp> {
                   await PusherBeams.instance.addDeviceInterest('bananas');
                 },
                 child: const Text('I like bananas')),
+            OutlinedButton(
+                onPressed: () async {
+                  await PusherBeams.instance.removeDeviceInterest('bananas');
+                },
+                child: const Text("I don't like banana anymore")),
             OutlinedButton(
                 onPressed: () async {
                   await PusherBeams.instance.addDeviceInterest('apples');
