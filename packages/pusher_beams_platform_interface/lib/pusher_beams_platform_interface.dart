@@ -6,13 +6,14 @@ import 'package:pusher_beams_platform_interface/method_channel_pusher_beams.dart
 
 typedef OnUserCallback = Function(String? error);
 typedef OnInterestsChange = Function(List<String?> interests);
+typedef OnMessageReceivedInTheForeground = Function(Map<Object?, Object?> data);
 
 abstract class PusherBeamsPlatform extends PlatformInterface {
   PusherBeamsPlatform() : super(token: _token);
 
   static final Object _token = Object();
 
-  // NOTE: Remember to change .onInterestChanges and .setUserId last argument to dynamic on MethodChannel
+  // NOTE: Remember to change .onInterestChanges, .setUserId and .onMessageReceivedInTheForeground last argument to dynamic on MethodChannel
   static PusherBeamsPlatform _instance = PusherBeamsApi();
 
   /// The default instance of [PusherBeamsPlatform] to use.
@@ -69,5 +70,11 @@ abstract class PusherBeamsPlatform extends PlatformInterface {
 
   Future<void> stop() {
     throw UnimplementedError('stop() has not been implemented.');
+  }
+
+  Future<void> onMessageReceivedInTheForeground(
+      OnMessageReceivedInTheForeground callback) {
+    throw UnimplementedError(
+        'onMessageReceivedInTheForeground() has not been implemented.');
   }
 }

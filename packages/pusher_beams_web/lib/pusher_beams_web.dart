@@ -60,7 +60,8 @@ class PusherBeams extends PusherBeamsPlatform {
   /// This is not implemented on web platform
   @override
   Future<void> onInterestChanges(OnInterestsChange callback) async {
-    throw UnimplementedError('onInterestChanges() is not implemented on web');
+    // Just ignore
+    return;
   }
 
   /// Removes an [interest] in this device.
@@ -99,8 +100,7 @@ class PusherBeams extends PusherBeamsPlatform {
     }
   }
 
-  /// Adds an [html.ScriptElement] to the main page with the Pusher Beams SDK for web.
-  /// Then it register this device to Pusher Beams service with the given [instanceId].
+  /// Register this device to Pusher Beams service with the given [instanceId].
   ///
   /// You must call this method as soon as possible in your application.
   ///
@@ -129,5 +129,13 @@ class PusherBeams extends PusherBeamsPlatform {
   Future<void> stop() async {
     await promiseToFuture(_beamsClient!.stop());
     _beamsClient = null;
+  }
+
+  @override
+  Future<void> onMessageReceivedInTheForeground(
+      OnMessageReceivedInTheForeground callback) async {
+    // Currently, we're not supporting foreground incoming message handling due to
+    // platform limitations on communication between Web Service Workers and Flutter ecossystem
+    return;
   }
 }

@@ -247,6 +247,39 @@ class PusherBeams extends PusherBeamsPlatform with CallbackHandlerApi {
     }
   }
 
+  /// Registers a listener which calls back the [OnMessageReceivedInTheForeground] function when the app receives a push notification in the foreground.
+  /// **This is not implemented on web.**
+  ///
+  /// Notification is a map containing the following keys:
+  ///   * title
+  ///   * body
+  ///   * data
+  ///
+  /// ## Example Usage
+  ///
+  /// ```dart
+  /// function someAsyncFunction() async {
+  ///   await PusherBeams.instance.onMessageReceivedInTheForeground((notification) => {
+  ///     print('Message received in the foreground: $notification')
+  ///   });
+  /// }
+  /// ```
+  ///
+  /// Throws an [Exception] in case of failure.
+
+  @override
+  Future<void> onMessageReceivedInTheForeground(
+      OnMessageReceivedInTheForeground callback) async {
+    final callbackId = _uuid.v4();
+
+    if (!kIsWeb) {
+      _callbacks[callbackId] = callback;
+    }
+
+    await _pusherBeamsApi
+        .onMessageReceivedInTheForeground(kIsWeb ? callback : callbackId);
+  }
+
   /// Handler which receives callbacks from the native platforms.
   /// This currently supports [onInterestChanges] and [setUserId] callbacks
   /// but by default it just call the [Function] set.
@@ -262,6 +295,9 @@ class PusherBeams extends PusherBeamsPlatform with CallbackHandlerApi {
         return;
       case "setUserId":
         callback(args[0] as String?);
+        return;
+      case "onMessageReceivedInTheForeground":
+        callback((args[0] as Map<Object?, Object?>));
         return;
       default:
         callback();

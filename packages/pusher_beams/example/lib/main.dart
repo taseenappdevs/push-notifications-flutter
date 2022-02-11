@@ -12,14 +12,28 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Pusher Beams Flutter Example',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const MyHomePage(title: 'Pusher Beams Flutter Example'),
+    );
+  }
 }
 
-class _MyAppState extends State<MyApp> {
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   @override
   initState() {
     super.initState();
@@ -35,7 +49,7 @@ class _MyAppState extends State<MyApp> {
       ..credentials = 'omit';
 
     await PusherBeams.instance.setUserId(
-        'THIS IS AN USER ID',
+        'user-id',
         provider,
         (error) => {
               if (error != null) {print(error)}
@@ -52,7 +66,26 @@ class _MyAppState extends State<MyApp> {
     if (!kIsWeb) {
       await PusherBeams.instance
           .onInterestChanges((interests) => {print('Interests: $interests')});
+
+      await PusherBeams.instance
+          .onMessageReceivedInTheForeground(_onMessageReceivedInTheForeground);
     }
+  }
+
+  void _onMessageReceivedInTheForeground(Map<Object?, Object?> data) {
+    _showAlert(data["title"].toString(), data["body"].toString());
+  }
+
+  void _showAlert(String title, String message) {
+    AlertDialog alert = AlertDialog(
+        title: Text(title), content: Text(message), actions: const []);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -71,6 +104,11 @@ class _MyAppState extends State<MyApp> {
                   await PusherBeams.instance.addDeviceInterest('bananas');
                 },
                 child: const Text('I like bananas')),
+            OutlinedButton(
+                onPressed: () async {
+                  await PusherBeams.instance.removeDeviceInterest('bananas');
+                },
+                child: const Text("I don't like banana anymore")),
             OutlinedButton(
                 onPressed: () async {
                   await PusherBeams.instance.addDeviceInterest('apples');
