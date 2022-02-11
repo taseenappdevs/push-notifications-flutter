@@ -1,3 +1,6 @@
+## 1.0.4
+- Foreground incoming push notifications handling support
+
 ## 1.0.3
 - Fix null errors due to flutter latest versions
 
