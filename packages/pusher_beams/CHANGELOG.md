@@ -1,3 +1,8 @@
+## 1.0.2
+- Update interface package to `1.0.4`.
+- Updating platform packages.
+- Foreground incoming push notifications handling support for Android and iOS
+
 ## 1.0.1
 - Updating platform packages.
 - Update interface package to `1.0.3`.
