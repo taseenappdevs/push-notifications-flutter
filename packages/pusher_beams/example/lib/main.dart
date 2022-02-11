@@ -6,8 +6,8 @@ import 'package:pusher_beams/pusher_beams.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await PusherBeams.instance.start(
-      '4232d328-8223-4c2a-bda3-36e4927321ce'); // Supply your own instanceId
+  await PusherBeams.instance
+      .start('your-instance-id'); // Supply your own instanceId
 
   runApp(const MyApp());
 }
