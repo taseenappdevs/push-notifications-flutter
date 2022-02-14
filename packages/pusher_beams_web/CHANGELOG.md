@@ -1,5 +1,5 @@
-## 1.0.2
-Updating `platform_interface` package to 1.0.4.
+## 1.0.2-dev.1
+Updating `platform_interface` package to 1.0.4-dev.1.
 
 ## 1.0.1
 Updating `platform_interface` package to 1.0.3.

@@ -124,10 +124,10 @@ packages:
   pusher_beams_platform_interface:
     dependency: "direct main"
     description:
-      path: "../pusher_beams_platform_interface"
-      relative: true
-    source: path
-    version: "1.0.3"
+      name: pusher_beams_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4-dev.1"
   sky_engine:
     dependency: transitive
     description: flutter

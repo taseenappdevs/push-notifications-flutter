@@ -1,6 +1,6 @@
 name: pusher_beams_android
 description: The Android implementation from Pusher Beams for Flutter, intended to be a platform-specific package.
-version: 1.0.2
+version: 1.0.2-dev.1
 repository: https://github.com/pusher/flutter_pusher_beams
 issue_tracker: https://github.com/pusher/flutter_pusher_beams/issues?q=is%3Aissue+is%3Aopen+label%3Aandroid
 
@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  pusher_beams_platform_interface: ^1.0.4
+  pusher_beams_platform_interface: ^1.0.4-dev.1
 
 dev_dependencies:
   flutter_test:
