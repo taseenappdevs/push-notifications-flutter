@@ -5,13 +5,13 @@
 Pod::Spec.new do |s|
   s.name             = 'pusher_beams_ios'
   s.version          = '0.0.1'
-  s.summary          = 'A new flutter plugin project.'
+  s.summary          = 'The iOS implementation from Pusher Beams for Flutter, intended to be a platform-specific package.'
   s.description      = <<-DESC
-A new flutter plugin project.
+      Beams Flutter Plugin for iOS
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'http://pusher.com'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Pusher' => 'services@pusher.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
