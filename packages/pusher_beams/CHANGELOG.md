@@ -1,4 +1,7 @@
 
+## 1.0.2
+- Foreground incoming push notifications handling support for Android and iOS
+
 ## 1.0.2-dev.3
 - Bump all dependencies
 
