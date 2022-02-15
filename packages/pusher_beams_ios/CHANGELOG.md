@@ -1,3 +1,6 @@
+## 1.0.3
+- Promote `1.0.3-dev.3` to stable version
+
 ## 1.0.3-dev.3
 - Updating `platform_interface` package to `1.0.4-dev.2`
 
