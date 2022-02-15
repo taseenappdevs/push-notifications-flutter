@@ -11,9 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  pusher_beams_platform_interface: ^1.0.4-dev.1
-  pusher_beams_web: ^1.0.2-dev.1
-  pusher_beams_android: ^1.0.2-dev.1
+  pusher_beams_platform_interface: ^1.0.4-dev.2
+  pusher_beams_web: ^1.0.2-dev.2
+  pusher_beams_android: ^1.0.2-dev.2
   pusher_beams_ios: ^1.0.3-dev.2
   uuid: ^3.0.5
 
