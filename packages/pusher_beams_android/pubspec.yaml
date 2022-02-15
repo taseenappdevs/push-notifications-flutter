@@ -1,8 +1,8 @@
 name: pusher_beams_android
 description: The Android implementation from Pusher Beams for Flutter, intended to be a platform-specific package.
-version: 1.0.2-dev.1
-repository: https://github.com/pusher/flutter_pusher_beams
-issue_tracker: https://github.com/pusher/flutter_pusher_beams/issues?q=is%3Aissue+is%3Aopen+label%3Aandroid
+version: 1.0.2-dev.2
+repository: https://github.com/pusher/push-notifications-flutter
+issue_tracker: https://github.com/pusher/push-notifications-flutter/issues?q=is%3Aissue+is%3Aopen+label%3Aandroid
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

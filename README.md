@@ -37,11 +37,11 @@ Official Flutter Plugin for [Pusher Beams](https://pusher.com/beams) using [Pige
 
 This plugin was developed based on the [Federated Plugin Architecture](https://docs.google.com/document/d/1LD7QjmzJZLCopUrFAAE98wOUQpjmguyGTN2wd_89Srs/edit?usp=sharing), following packages are included in the plugin:
 
-- [pusher_beams](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams): This is intended to be the main or _app-facing package_. **You must install this package in order to use it**.
-- [pusher_beams_platform_interface](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams_platform_interface): This is the _platform package interface_ that glues [pusher_beams](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams) and platform packages.
-- [pusher_beams_android](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams_android): This is a _platform package_ which implements Android code.
-- [pusher_beams_ios](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams_ios): This is a _platform package_ which implements the iOS code
-- [pusher_beams_web](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams_web): This is a _platform package_ which implements the Web code.
+- [pusher_beams](https://github.com/pusher/push-notifications-flutter/tree/master/packages/pusher_beams): This is intended to be the main or _app-facing package_. **You must install this package in order to use it**.
+- [pusher_beams_platform_interface](https://github.com/pusher/push-notifications-flutter/tree/master/packages/pusher_beams_platform_interface): This is the _platform package interface_ that glues [pusher_beams](https://github.com/pusher/push-notifications-flutter/tree/master/packages/pusher_beams) and platform packages.
+- [pusher_beams_android](https://github.com/pusher/push-notifications-flutter/tree/master/packages/pusher_beams_android): This is a _platform package_ which implements Android code.
+- [pusher_beams_ios](https://github.com/pusher/push-notifications-flutter/tree/master/packages/pusher_beams_ios): This is a _platform package_ which implements the iOS code
+- [pusher_beams_web](https://github.com/pusher/push-notifications-flutter/tree/master/packages/pusher_beams_web): This is a _platform package_ which implements the Web code.
 
 ## Flutter Support
 
@@ -84,7 +84,7 @@ This plugin supports Web, Android and iOS platforms.
 
 A fully example using this plugin can be found in this repository, implementing a basic use of most of the functionality included in this plugin.
 
-[See Example](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams/example)
+[See Example](https://github.com/pusher/push-notifications-flutter/tree/master/packages/pusher_beams/example)
 
 ## Prerequisites
 
@@ -192,11 +192,11 @@ This repository is following [git flow branching model](https://nvie.com/posts/a
 
 Commits follows the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) standard, which scopes are the follow:
 
-- **pusher_beams**: For [pusher_beams](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams) code commits.
-- **web**: For [pusher_beams_web](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams_web) code commits.
-- **ios**: For [pusher_beams_ios](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_ios) code commits.
-- **android**: For [pusher_beams_android](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams_android) code commits.
-- **interface**: For [pusher_beams_platform_interface](https://github.com/pusher/flutter_pusher_beams/tree/master/packages/pusher_beams_platform_interface) code commits.
+- **pusher_beams**: For [pusher_beams](https://github.com/pusher/push-notifications-flutter/tree/master/packages/pusher_beams) code commits.
+- **web**: For [pusher_beams_web](https://github.com/pusher/push-notifications-flutter/tree/master/packages/pusher_beams_web) code commits.
+- **ios**: For [pusher_beams_ios](https://github.com/pusher/push-notifications-flutter/tree/master/packages/pusher_ios) code commits.
+- **android**: For [pusher_beams_android](https://github.com/pusher/push-notifications-flutter/tree/master/packages/pusher_beams_android) code commits.
+- **interface**: For [pusher_beams_platform_interface](https://github.com/pusher/push-notifications-flutter/tree/master/packages/pusher_beams_platform_interface) code commits.
 
 So, in order to commit something you must use a commit message like below:
 
