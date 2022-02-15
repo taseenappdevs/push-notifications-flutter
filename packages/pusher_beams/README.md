@@ -1,5 +1,3 @@
-⚠️ Please note this SDK is currently being tested and is not yet production ready.
-
 # Pusher Beams for Flutter
 
 ![Pub Version](https://img.shields.io/pub/v/pusher_beams)
