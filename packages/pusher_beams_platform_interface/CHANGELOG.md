@@ -1,3 +1,6 @@
+## 1.0.4
+- Promotion `1.0.4-dev.2` to stable version
+
 ## 1.0.4-dev.2
 - Update old repository references to the new one
 
