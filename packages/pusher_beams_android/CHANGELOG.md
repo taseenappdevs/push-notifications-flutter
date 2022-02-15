@@ -1,6 +1,9 @@
+## 1.0.2-dev.2
+- Updating `platform_interface` package to `1.0.4-dev.2`
+
 ## 1.0.2-dev.1
 - Foreground incoming push notifications handling support for Android
-- Updating `platform_interface` package to 1.0.4-dev.1
+- Updating `platform_interface` package to `1.0.4-dev.1`
 
 ## 1.0.1
 - Updating _PusherBeams_ Android library to `1.8.0`
