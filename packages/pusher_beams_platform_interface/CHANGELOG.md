@@ -1,3 +1,6 @@
+## 1.0.4-dev.2
+- Update old repository references to the new one
+
 ## 1.0.4-dev.1
 - Foreground incoming push notifications handling support
 

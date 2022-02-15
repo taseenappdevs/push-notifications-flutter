@@ -1,4 +1,7 @@
 
+## 1.0.2-dev.3
+- Bump all dependencies
+
 ## 1.0.2-dev.2
 - Update iOS package to `1.0.3-dev.2`
 
