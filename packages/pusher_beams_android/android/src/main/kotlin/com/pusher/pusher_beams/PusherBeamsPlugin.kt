@@ -2,6 +2,7 @@ package com.pusher.pusher_beams
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import androidx.annotation.NonNull
 import com.google.firebase.messaging.RemoteMessage
 import com.pusher.pushnotifications.*
@@ -14,11 +15,18 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 
+import io.flutter.plugin.common.PluginRegistry.NewIntentListener
+import org.json.JSONObject
+import org.json.JSONTokener
+
 /** PusherBeamsPlugin */
-class PusherBeamsPlugin : FlutterPlugin, Messages.PusherBeamsApi, ActivityAware {
+class PusherBeamsPlugin : FlutterPlugin, Messages.PusherBeamsApi, ActivityAware, NewIntentListener {
     private lateinit var context: Context
     private var alreadyInterestsListener: Boolean = false
     private var currentActivity: Activity? = null
+
+    private var data: kotlin.collections.Map<String, kotlin.Any?>? = null
+    private var initialIntent = true
 
     private lateinit var callbackHandlerApi: Messages.CallbackHandlerApi
 
@@ -34,12 +42,51 @@ class PusherBeamsPlugin : FlutterPlugin, Messages.PusherBeamsApi, ActivityAware 
         callbackHandlerApi = Messages.CallbackHandlerApi(binding.binaryMessenger)
     }
 
-    override fun start(instanceId: String) {
+    override fun onNewIntent(intent: Intent?): Boolean {
+        handleIntent(context, intent!!)
+        return false
+    }
+
+    override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+        this.currentActivity = binding.activity;
+        binding.addOnNewIntentListener(this)
+        handleIntent(context, binding.activity.intent)
+    }
+
+    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+        binding.addOnNewIntentListener(this)
+        handleIntent(context, binding.activity.intent)
+    }
+
+    override fun onDetachedFromActivityForConfigChanges() {}
+
+    override fun onDetachedFromActivity() {
+        this.currentActivity = null;
+    }
+
+    private fun handleIntent(context: Context, intent: Intent) {
+        val extras = intent.extras
+        if (extras != null) {
+            if (initialIntent) {
+                Log.d(this.toString(), "Got extras: $extras")
+                data = bundleToMap(extras.getString("info"))
+                Log.d(this.toString(), "Got initial data: $data")
+                initialIntent = false
+            }
+        }
+    }
+
+    override fun start(instanceId: kotlin.String) {
         PushNotifications.start(this.context, instanceId)
         Log.d(this.toString(), "PusherBeams started with $instanceId instanceId")
     }
 
-    override fun addDeviceInterest(interest: String) {
+    override fun getInitialMessage(result: Messages.Result<kotlin.collections.Map<String, kotlin.Any?>>) {
+        Log.d(this.toString(), "Returning initial data: $data")
+        result.success(data)
+    }
+
+    override fun addDeviceInterest(interest: kotlin.String) {
         PushNotifications.addDeviceInterest(interest)
         Log.d(this.toString(), "Added device to interest: $interest")
     }
@@ -65,49 +112,62 @@ class PusherBeamsPlugin : FlutterPlugin, Messages.PusherBeamsApi, ActivityAware 
 
     override fun onInterestChanges(callbackId: String) {
         if (!alreadyInterestsListener) {
-            PushNotifications.setOnDeviceInterestsChangedListener(object : SubscriptionsChangedListener {
+            PushNotifications.setOnDeviceInterestsChangedListener(object :
+                SubscriptionsChangedListener {
                 override fun onSubscriptionsChanged(interests: Set<String>) {
-                    callbackHandlerApi.handleCallback(callbackId, "onInterestChanges", listOf(interests.toList()), Messages.CallbackHandlerApi.Reply {
-                        Log.d(this.toString(), "interests changed $interests")
-                    })
+                    callbackHandlerApi.handleCallback(
+                        callbackId,
+                        "onInterestChanges",
+                        listOf(interests.toList()),
+                        Messages.CallbackHandlerApi.Reply {
+                            Log.d(this.toString(), "interests changed $interests")
+                        })
                 }
             })
         }
     }
 
     override fun setUserId(
-            userId: String,
-            provider: Messages.BeamsAuthProvider,
-            callbackId: String
+        userId: String,
+        provider: Messages.BeamsAuthProvider,
+        callbackId: String
     ) {
         val tokenProvider = BeamsTokenProvider(
-                provider.authUrl,
-                object : AuthDataGetter {
-                    override fun getAuthData(): AuthData {
-                        return AuthData(
-                                headers = provider.headers,
-                                queryParams = provider.queryParams
-                        )
-                    }
+            provider.authUrl,
+            object : AuthDataGetter {
+                override fun getAuthData(): AuthData {
+                    return AuthData(
+                        headers = provider.headers,
+                        queryParams = provider.queryParams
+                    )
                 }
+            }
         )
 
         PushNotifications.setUserId(
-                userId,
-                tokenProvider,
-                object : BeamsCallback<Void, PusherCallbackError> {
-                    override fun onFailure(error: PusherCallbackError) {
-                        callbackHandlerApi.handleCallback(callbackId, "setUserId", listOf(error.message), Messages.CallbackHandlerApi.Reply {
+            userId,
+            tokenProvider,
+            object : BeamsCallback<Void, PusherCallbackError> {
+                override fun onFailure(error: PusherCallbackError) {
+                    callbackHandlerApi.handleCallback(
+                        callbackId,
+                        "setUserId",
+                        listOf(error.message),
+                        Messages.CallbackHandlerApi.Reply {
                             Log.d(this.toString(), "Failed to set Authentication to device")
                         })
-                    }
+                }
 
-                    override fun onSuccess(vararg values: Void) {
-                        callbackHandlerApi.handleCallback(callbackId, "setUserId", listOf(null), Messages.CallbackHandlerApi.Reply {
+                override fun onSuccess(vararg values: Void) {
+                    callbackHandlerApi.handleCallback(
+                        callbackId,
+                        "setUserId",
+                        listOf(null),
+                        Messages.CallbackHandlerApi.Reply {
                             Log.d(this.toString(), "Device authenticated with $userId")
                         })
-                    }
                 }
+            }
         )
     }
 
@@ -117,16 +177,22 @@ class PusherBeamsPlugin : FlutterPlugin, Messages.PusherBeamsApi, ActivityAware 
 
     override fun onMessageReceivedInTheForeground(callbackId: String) {
         currentActivity?.let { activity ->
-            PushNotifications.setOnMessageReceivedListenerForVisibleActivity(activity, object : PushNotificationReceivedListener {
-                override fun onMessageReceived(remoteMessage: RemoteMessage) {
-                    activity.runOnUiThread {
-                        val pusherMessage = remoteMessage.toPusherMessage()
-                        callbackHandlerApi.handleCallback(callbackId, "onMessageReceivedInTheForeground", listOf(pusherMessage)) {
-                            Log.d(this.toString(), "Message received: $pusherMessage")
+            PushNotifications.setOnMessageReceivedListenerForVisibleActivity(
+                activity,
+                object : PushNotificationReceivedListener {
+                    override fun onMessageReceived(remoteMessage: RemoteMessage) {
+                        activity.runOnUiThread {
+                            val pusherMessage = remoteMessage.toPusherMessage()
+                            callbackHandlerApi.handleCallback(
+                                callbackId,
+                                "onMessageReceivedInTheForeground",
+                                listOf(pusherMessage)
+                            ) {
+                                Log.d(this.toString(), "Message received: $pusherMessage")
+                            }
                         }
                     }
-                }
-            })
+                })
         }
     }
 
@@ -134,18 +200,19 @@ class PusherBeamsPlugin : FlutterPlugin, Messages.PusherBeamsApi, ActivityAware 
         PushNotifications.stop()
     }
 
-    override fun onAttachedToActivity(pluginBinding: ActivityPluginBinding) {
-        this.currentActivity = pluginBinding.activity;
-    }
+    private fun bundleToMap(info: kotlin.String?): kotlin.collections.Map<kotlin.String, kotlin.Any?>? {
+        if (info == null)
+            return null
 
-    override fun onDetachedFromActivityForConfigChanges() {
-    }
+        val map: MutableMap<String, kotlin.Any?> = HashMap<String, kotlin.Any?>()
+        val infoJson = JSONTokener(info).nextValue() as JSONObject
 
-    override fun onReattachedToActivityForConfigChanges(pluginBinding: ActivityPluginBinding) {
-    }
-
-    override fun onDetachedFromActivity() {
-        this.currentActivity = null;
+        val iterator = infoJson.keys()
+        while (iterator.hasNext()) {
+            val key = iterator.next()
+            map[key] = infoJson.get(key)
+        }
+        return map
     }
 }
 
