@@ -96,6 +96,32 @@ class PusherBeamsApi extends PusherBeamsPlatform {
     }
   }
 
+  Future<Map<String, dynamic>?> getInitialMessage() async {
+    final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.PusherBeamsApi.getInitialMessage', codec,
+        binaryMessenger: _binaryMessenger);
+    final Map<Object?, Object?>? replyMap =
+        await channel.send(null) as Map<Object?, Object?>?;
+    if (replyMap == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message: 'Unable to establish connection on channel.',
+        details: null,
+      );
+    } else if (replyMap['error'] != null) {
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
+      throw PlatformException(
+        code: (error['code'] as String?)!,
+        message: error['message'] as String?,
+        details: error['details'],
+      );
+    } else {
+      return (replyMap['result'] as Map<Object?, Object?>?)
+          ?.cast<String, dynamic>();
+    }
+  }
+
   Future<void> addDeviceInterest(String arg_interest) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
         'dev.flutter.pigeon.PusherBeamsApi.addDeviceInterest', codec,
