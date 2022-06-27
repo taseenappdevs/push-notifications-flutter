@@ -1,3 +1,5 @@
+## 1.0.3
+- Add a `getInitialMessage` method to accomplish deep-linking from a Push Notification
 
 ## 1.0.2
 - Foreground incoming push notifications handling support for Android and iOS

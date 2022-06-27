@@ -1,6 +1,6 @@
 name: pusher_beams_web
 description: The Web implementation from Pusher Beams for Flutter, intended to be a platform-specific package.
-version: 1.0.2
+version: 1.0.3
 repository: https://github.com/pusher/push-notifications-flutter
 issue_tracker: https://github.com/pusher/push-notifications-flutter/issues?q=is%3Aissue+is%3Aopen+label%3Aweb
 
@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-  pusher_beams_platform_interface: ^1.0.4
+  pusher_beams_platform_interface: ^1.0.5
   js: ^0.6.3
   uuid: ^3.0.5
 
