@@ -77,8 +77,7 @@ static NSDictionary<NSString *, id> *wrapResult(id result, FlutterError *error) 
   if ([value isKindOfClass:[BeamsAuthProvider class]]) {
     [self writeByte:128];
     [self writeValue:[value toMap]];
-  } else 
-{
+  } else {
     [super writeValue:value];
   }
 }
@@ -121,6 +120,24 @@ void PusherBeamsApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<Pu
         FlutterError *error;
         [api startInstanceId:arg_instanceId error:&error];
         callback(wrapResult(nil, error));
+      }];
+    }
+    else {
+      [channel setMessageHandler:nil];
+    }
+  }
+  {
+    FlutterBasicMessageChannel *channel =
+      [FlutterBasicMessageChannel
+        messageChannelWithName:@"dev.flutter.pigeon.PusherBeamsApi.getInitialMessage"
+        binaryMessenger:binaryMessenger
+        codec:PusherBeamsApiGetCodec()];
+    if (api) {
+      NSCAssert([api respondsToSelector:@selector(getInitialMessageWithCompletion:)], @"PusherBeamsApi api (%@) doesn't respond to @selector(getInitialMessageWithCompletion:)", api);
+      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        [api getInitialMessageWithCompletion:^(NSDictionary<NSString *, NSObject *> *_Nullable output, FlutterError *_Nullable error) {
+          callback(wrapResult(output, error));
+        }];
       }];
     }
     else {

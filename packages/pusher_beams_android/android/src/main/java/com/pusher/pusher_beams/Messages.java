@@ -58,6 +58,11 @@ public class Messages {
       return fromMapResult;
     }
   }
+
+  public interface Result<T> {
+    void success(T result);
+    void error(Throwable error);
+  }
   private static class PusherBeamsApiCodec extends StandardMessageCodec {
     public static final PusherBeamsApiCodec INSTANCE = new PusherBeamsApiCodec();
     private PusherBeamsApiCodec() {}
@@ -77,8 +82,7 @@ public class Messages {
       if (value instanceof BeamsAuthProvider) {
         stream.write(128);
         writeValue(stream, ((BeamsAuthProvider) value).toMap());
-      } else 
-{
+      } else {
         super.writeValue(stream, value);
       }
     }
@@ -87,6 +91,7 @@ public class Messages {
   /** Generated interface from Pigeon that represents a handler of messages from Flutter.*/
   public interface PusherBeamsApi {
     void start(String instanceId);
+    void getInitialMessage(Result<Map<String, Object>> result);
     void addDeviceInterest(String interest);
     void removeDeviceInterest(String interest);
     List<String> getDeviceInterests();
@@ -124,6 +129,35 @@ public class Messages {
               wrapped.put("error", wrapError(exception));
             }
             reply.reply(wrapped);
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.PusherBeamsApi.getInitialMessage", getCodec());
+        if (api != null) {
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              Result<Map<String, Object>> resultCallback = new Result<Map<String, Object>>() {
+                public void success(Map<String, Object> result) {
+                  wrapped.put("result", result);
+                  reply.reply(wrapped);
+                }
+                public void error(Throwable error) {
+                  wrapped.put("error", wrapError(error));
+                  reply.reply(wrapped);
+                }
+              };
+
+              api.getInitialMessage(resultCallback);
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+              reply.reply(wrapped);
+            }
           });
         } else {
           channel.setMessageHandler(null);

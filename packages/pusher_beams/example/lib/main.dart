@@ -1,13 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:pusher_beams/pusher_beams.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await PusherBeams.instance
-      .start('your-instance-id'); // Supply your own instanceId
+  await PusherBeams.instance.start(
+      'your-instance-id'); // Supply your own instanceId
 
   runApp(const MyApp());
 }
@@ -69,6 +68,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
       await PusherBeams.instance
           .onMessageReceivedInTheForeground(_onMessageReceivedInTheForeground);
+    }
+    await _checkForInitialMessage();
+  }
+
+  Future<void> _checkForInitialMessage() async {
+    final initialMessage = await PusherBeams.instance.getInitialMessage();
+    if (initialMessage != null) {
+      _showAlert('Initial Message Is:', initialMessage.toString());
     }
   }
 

@@ -22,6 +22,7 @@ NSObject<FlutterMessageCodec> *PusherBeamsApiGetCodec(void);
 
 @protocol PusherBeamsApi
 - (void)startInstanceId:(NSString *)instanceId error:(FlutterError *_Nullable *_Nonnull)error;
+- (void)getInitialMessageWithCompletion:(void(^)(NSDictionary<NSString *, NSObject *> *_Nullable, FlutterError *_Nullable))completion;
 - (void)addDeviceInterestInterest:(NSString *)interest error:(FlutterError *_Nullable *_Nonnull)error;
 - (void)removeDeviceInterestInterest:(NSString *)interest error:(FlutterError *_Nullable *_Nonnull)error;
 - (nullable NSArray<NSString *> *)getDeviceInterestsWithError:(FlutterError *_Nullable *_Nonnull)error;
