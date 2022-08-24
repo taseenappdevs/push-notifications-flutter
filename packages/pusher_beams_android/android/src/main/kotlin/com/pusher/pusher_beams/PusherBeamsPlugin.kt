@@ -42,7 +42,7 @@ class PusherBeamsPlugin : FlutterPlugin, Messages.PusherBeamsApi, ActivityAware,
         callbackHandlerApi = Messages.CallbackHandlerApi(binding.binaryMessenger)
     }
 
-    override fun onNewIntent(intent: Intent?): Boolean {
+    override fun onNewIntent(intent: Intent): Boolean {
         handleIntent(context, intent!!)
         return false
     }
