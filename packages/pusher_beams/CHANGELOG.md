@@ -1,3 +1,6 @@
+## 1.1.2
+- Upgrade dependency versions
+
 ## 1.1.1
 - Fix `PusherBeamsPlugin.kt` `onNewIntent` null safety
 
